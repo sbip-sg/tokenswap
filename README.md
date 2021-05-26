@@ -18,3 +18,20 @@ Part A wants to buy 100 amount of housetoken that is owned by Party B.
 
 - Party A transfer ehter(or erc token) to Party B()
 - Party B transfer 100 amount of housetoken to Party A
+
+### Pre-requisites
+
+**Ethereum environment**
+
+- Node.js v12
+- Python v2
+
+**Cordapp environment**
+
+- Java 1.8
+- Xterm(linux)
+
+
+
+
+
