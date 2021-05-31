@@ -139,3 +139,8 @@ You can now view the number of Tokens held by both the Buyer and the friend by e
 
     flow start GetTokenBalance symbol: house
 
+### HTLC
+Init HTLC and fund toke to escrow
+
+    flow start HTLCFundFlow HTLCId: 1001, escrow: Escrow, receiver: Receiver, symbol: house, amount: 30, time: 100, hash: 0xfd69353b27210d2567bc0ade61674bbc3fc01a558a61c2a0cb2b13d96f9387cd
+
