@@ -7,6 +7,7 @@ tags
 *.log.gz
 *.orig
 
+
 .gradle
 
 # General build files
@@ -84,3 +85,4 @@ lib
 **/out/
 **/logs/
 **/node_modules/
+**/.idea/
