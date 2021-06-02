@@ -104,43 +104,41 @@ Then type: (to run the nodes)
 ./build/nodes/runnodes
 ```
 
-### Interacting with the nodes
+### Working in node shell
 
-#### Shell
-
-When started via the command line, each node will display an interactive shell:
-
-    Welcome to the Corda interactive shell.
-    Useful commands include 'help' to see what is available, and 'bye' to shut down the node.
-
-    Tue July 09 11:58:13 GMT 2019>>>
-
-You can use this shell to interact with your node.
+### Create and Issue token
 
 
-Create house on the ledger using Seller's terminal
+
+Create house on the ledger using Escrow's terminal
 
     flow start CreateHouseTokenFlow symbol: house, valuation: 100000
 
-This will create a linear state of type HouseTokenState in Seller's vault
+This will create a linear state of type HouseTokenState in Escrow's vault
 
-Seller will now issue some tokens to Buyer. run below command via Seller's terminal.
+Seller will now issue some tokens to Buyer. run below command via Escrow's terminal.
 
-    flow start IssueHouseTokenFlow symbol: house, quantity: 50, holder: Buyer
+    flow start IssueHouseTokenFlow symbol: house, quantity: 50, holder: Sender
 
-Now at Buyer's terminal, we can check the tokens by running:
+Now at Sender's terminal, we can check the tokens by running:
     flow start GetTokenBalance symbol: house
 
-Since Buyer now has 50 tokens, Move tokens to Friend from Buyer s terminal
 
-    flow start MoveHouseTokenFlow symbol: house, holder: Friend, quantity: 23
-
-You can now view the number of Tokens held by both the Buyer and the friend by executing the following Query flow in their respective terminals.
-
-    flow start GetTokenBalance symbol: house
-
-### HTLC
-Init HTLC and fund toke to escrow
+### HTLC Process
+Init HTLC and fund token to escrow in Sender's terminal
 
     flow start HTLCFundFlow HTLCId: 1001, escrow: Escrow, receiver: Receiver, symbol: house, amount: 30, time: 100, hash: 0xfd69353b27210d2567bc0ade61674bbc3fc01a558a61c2a0cb2b13d96f9387cd
 
+Withdraw HTLC from Escrow in Receiver's terminal
+
+    flow start HTLCWithdrawFlow escrow: Escrow, HTLCId: 1001, secret: abracadabra
+
+Refund HTLC from Escrow in Sender's terminal
+
+    flow start HTLCRefundFlow escrow: Escrow, HTLCId: 1001
+
+
+    #test for refund
+    flow start HTLCFundFlow HTLCId: 1002, escrow: Escrow, receiver: Receiver, symbol: house, amount: 10, time: 10, hash: 0xfd69353b27210d2567bc0ade61674bbc3fc01a558a61c2a0cb2b13d96f9387cd
+
+    flow start HTLCRefundFlow escrow: Escrow, HTLCId: 1002

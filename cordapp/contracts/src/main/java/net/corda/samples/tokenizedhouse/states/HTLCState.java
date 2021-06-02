@@ -21,6 +21,8 @@ public class HTLCState implements ContractState {
     private int amount;
     private String hash;
     private String key;
+    //TODO withdraw status
+    private Boolean ifWithdrawOrRefund;
 
     public HTLCState(String HTLCId, Party sender, Party receiver, Party escrow, int time, String symbol, int amount, String hash){
            this.HTLCId = HTLCId;
@@ -61,5 +63,13 @@ public class HTLCState implements ContractState {
 
     public String getHash() {
         return hash;
+    }
+
+    public String getHTLCId() {
+        return HTLCId;
+    }
+
+    public String getSymbol() {
+        return symbol;
     }
 }

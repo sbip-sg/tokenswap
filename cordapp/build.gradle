@@ -78,6 +78,8 @@ sourceSets {
 dependencies {
     testCompile "junit:junit:$junit_version"
 
+    //sha3 library
+    compile 'org.bouncycastle:bcprov-jdk15on:1.60'
     // Corda dependencies.
     cordaCompile "$corda_release_group:corda-core:$corda_release_version"
     cordaCompile "$corda_release_group:corda-node-api:$corda_release_version"
@@ -120,7 +122,7 @@ task deployNodes(type: net.corda.plugins.Cordform, dependsOn: ['jar']) {
         cordapps = []
     }
     node {
-        name "O=Sender,L=London,C=GB"
+        name "O=Escrow,L=London,C=GB"
         p2pPort 10005
         rpcSettings {
             address("localhost:10006")
@@ -129,7 +131,7 @@ task deployNodes(type: net.corda.plugins.Cordform, dependsOn: ['jar']) {
         rpcUsers = [[ user: "user1", "password": "test", "permissions": ["ALL"]]]
     }
     node {
-        name "O=Receiver,L=New York,C=US"
+        name "O=Sender,L=New York,C=US"
         p2pPort 10008
         rpcSettings {
             address("localhost:10009")
@@ -138,11 +140,11 @@ task deployNodes(type: net.corda.plugins.Cordform, dependsOn: ['jar']) {
         rpcUsers = [[ user: "user1", "password": "test", "permissions": ["ALL"]]]
     }
     node {
-        name "O=Escrow,L=Paris,C=FR"
+        name "O=Receiver,L=Paris,C=FR"
         p2pPort 10012
         rpcSettings {
-            address("localhost:10005")
-            adminAddress("localhost:10045")
+            address("localhost:10013")
+            adminAddress("localhost:10014")
         }
         rpcUsers = [[user: "user1", "password": "test", "permissions": ["ALL"]]]
     }
