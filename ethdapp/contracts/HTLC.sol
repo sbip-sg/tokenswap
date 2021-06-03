@@ -4,7 +4,7 @@ import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 
 contract HTLC {
   uint public startTime;
-  uint public lockTime = 10000 seconds;
+  uint public lockTime = 1500 seconds;
   string private secret; //abracadabra 
   bytes32 public hash;
   //0xfd69353b27210d2567bc0ade61674bbc3fc01a558a61c2a0cb2b13d96f9387cd;
@@ -13,7 +13,7 @@ contract HTLC {
   uint public amount; 
   IERC20 public token;
 
-  constructor(address _recipient, address _token, uint _amount,bytes32 _hash) { 
+  constructor(address _recipient, address _token, uint _amount, bytes32 _hash) { 
     recipient = _recipient;
     owner = msg.sender; 
     amount = _amount;

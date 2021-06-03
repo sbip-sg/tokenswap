@@ -1,7 +1,6 @@
 const Token = artifacts.require('Token.sol');
 const HTLC = artifacts.require('HTLC.sol');
 const hash = '0xfd69353b27210d2567bc0ade61674bbc3fc01a558a61c2a0cb2b13d96f9387cd';
-
 module.exports = async function (deployer, network, addresses) {
   const [bob, alice] = addresses;      
 
@@ -12,13 +11,5 @@ module.exports = async function (deployer, network, addresses) {
     const htlc = await HTLC.deployed();
     await tokenA.approve(htlc.address, 1, {from: bob});
     await htlc.fund({from: bob});
-  }
-  if(network === 'binanceTestnet') {
-    await deployer.deploy(Token, 'Token B', 'TKNB', {from: alice});
-    const tokenB = await Token.deployed();
-    await deployer.deploy(HTLC, bob, tokenB.address, 1, hash,{from: alice});
-    const htlc = await HTLC.deployed();
-    await tokenB.approve(htlc.address, 1, {from: alice});
-    await htlc.fund({from: alice});
   }
 };
