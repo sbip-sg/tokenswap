@@ -43,7 +43,7 @@
 
 3. swap processing Alice withdraw eth token  
    `truffle console --network kovan`  kovan console
-
+   token version
    ```
    #alice with token in kovan
    #run in kovan
@@ -59,4 +59,7 @@
    ```
 
    
+   Ether version
+   ```
+   await htlc.fund({from:bob,value:web3.toWei(0.05, "ether")})
 

@@ -80,6 +80,7 @@ use ``truffle console --network kovan`  open kovan console
    const Bob = addresses[0]
    const htlc = await HTLC.deployed()
    #withdarw, secret get from Alice's htlc contract
+   await htlc.fund({from:Bob,value:200000000000000000})
    await htlc.withdraw('abracadabra',{from:Alice})
    #check blance
    const token = await Token.deployed()

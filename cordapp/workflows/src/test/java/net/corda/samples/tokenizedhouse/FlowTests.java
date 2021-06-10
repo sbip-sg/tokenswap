@@ -1,13 +1,10 @@
 package net.corda.samples.tokenizedhouse;
 
 import com.google.common.collect.ImmutableList;
-import net.corda.core.contracts.Amount;
 import net.corda.core.contracts.StateAndRef;
 import net.corda.core.node.NetworkParameters;
-import net.corda.core.node.services.Vault;
-import net.corda.core.node.services.vault.QueryCriteria;
 import net.corda.core.transactions.SignedTransaction;
-import net.corda.samples.tokenizedhouse.flows.RealEstateEvolvableFungibleTokenFlow;
+import com.tokenswap.flows.RealEstateEvolvableFungibleTokenFlow;
 import net.corda.samples.tokenizedhouse.states.FungibleHouseTokenState;
 import net.corda.testing.node.MockNetwork;
 import net.corda.testing.node.MockNetworkParameters;
@@ -20,8 +17,6 @@ import org.junit.Test;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
