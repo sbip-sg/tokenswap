@@ -95,6 +95,6 @@ use ``truffle console --network kovan`  open kovan console
 7. Other Secrinos
 1) Alice Refund token when time expires
 
-    flow start HTLCFundFlow HTLCId: 1002, escrow: Escrow, receiver: Receiver, symbol: house, amount: 10, time: 10, hash: 0xfd69353b27210d2567bc0ade61674bbc3fc01a558a61c2a0cb2b13d96f9387cd
+    flow start HTLCFundFlow HTLCId: 1002, escrow: Escrow, receiver: Bob, symbol: house, amount: 10, time: 30, hash: 0xfd69353b27210d2567bc0ade61674bbc3fc01a558a61c2a0cb2b13d96f9387cd
 
     flow start HTLCRefundFlow escrow: Escrow, HTLCId: 1002
