@@ -127,7 +127,7 @@ Now at Sender's terminal, we can check the tokens by running:
 ### HTLC Process
 Init HTLC and fund token to escrow in Sender's terminal
 
-    flow start HTLCFundFlow HTLCId: 1001, escrow: Escrow, receiver: Receiver, symbol: house, amount: 30, time: 3000, hash: 0xfd69353b27210d2567bc0ade61674bbc3fc01a558a61c2a0cb2b13d96f9387cd
+    flow start HTLCFundFlow HTLCId: 1001, escrow: Escrow, receiver: Bob, symbol: house, amount: 30, time: 3000, hash: 0xfd69353b27210d2567bc0ade61674bbc3fc01a558a61c2a0cb2b13d96f9387cd
 
 Withdraw HTLC from Escrow in Receiver's terminal
 
