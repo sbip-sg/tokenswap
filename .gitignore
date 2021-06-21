@@ -13,7 +13,9 @@ tags
 # General build files
 **/build/*
 !docs/build/*
-
+**/bin/*
+**/.settings/*
+*/.settings/*
 lib/dokka.jar
 
 ### JetBrains template
