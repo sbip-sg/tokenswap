@@ -115,3 +115,12 @@
         flex-direction: column;
     }
 }
+
+
+.message-list {
+  position: absolute;
+  display: flexbox;
+  right: 1%;
+  top: 70px;
+  z-index: 9999;
+}
