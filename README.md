@@ -52,18 +52,18 @@ or
 cd ./build/nodes & java -jar runnodes.jar 
 ```
 
-2. Escrosw issue creat token and issue 50 house token to Sender(work in Escrow node)
+2. Escrosw issue creat token and issue 50 house token to Alice(work in Escrow node)
 ```bash
 #create token
 flow start CreateHouseTokenFlow symbol: house, valuation: 100000
 #issue token
-flow start IssueHouseTokenFlow symbol: house, quantity: 50, holder: Sender
+flow start IssueHouseTokenFlow symbol: house, quantity: 50, holder: Alice
 ```
 ### HTLC Process
 
-3. Alice Init HTLC and fund 30 token to Escrow node in Sender's terminal(corda side)
+3. Alice Init HTLC and fund 30 token to Escrow node in Alice's terminal(corda side)
 
-    flow start HTLCFundFlow HTLCId: 1001, escrow: Escrow, receiver: Receiver, symbol: house, amount: 30, time: 3000, hash: 0xfd69353b27210d2567bc0ade61674bbc3fc01a558a61c2a0cb2b13d96f9387cd
+    flow start HTLCFundFlow HTLCId: 1001, escrow: Escrow, receiver: Bob, symbol: house, amount: 30, time: 3000, hash: 0xfd69353b27210d2567bc0ade61674bbc3fc01a558a61c2a0cb2b13d96f9387cd
 
 4. Bob deploy token and htlc contracts, then fund 0.1 Ether in htlc contract(Ethereum side)
 
@@ -83,12 +83,12 @@ use ``truffle console --network kovan`  open kovan console
    await htlc.fund({from:Bob,value:200000000000000000})
    await htlc.withdraw('abracadabra',{from:Alice})
    #check blance
-   const token = await Token.deployed()
-   const balance = await token.balanceOf(Alice)
+   #const token = await Token.deployed()
+   #const balance = await token.balanceOf(Alice)
    #bob get secrect from smartcontract
    const mySecret = await htlc.getSecret.call({from:Bob})
 ```
-6. Withdraw HTLC from Escrow in Receiver's terminal
+6. Withdraw HTLC from Escrow in Bob's terminal
 
     flow start HTLCWithdrawFlow escrow: Escrow, HTLCId: 1001, secret: abracadabra
 

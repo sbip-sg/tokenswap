@@ -2,7 +2,7 @@ pragma solidity ^0.8.0;
 
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 
-contract HTLC {
+contract HTLCToken {
   uint public startTime;
   uint public lockTime = 1500 seconds;
   string private secret; //abracadabra 
