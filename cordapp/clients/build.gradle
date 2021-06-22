@@ -24,7 +24,7 @@ dependencies {
 }
 
 springBoot {
-    mainClassName = "com.template.webserver.Server"
+    mainClassName = "com.tokenswap.webserver.Server"
 }
 
 /* The Client is the communication channel between the external and the node. This task will help you immediately
@@ -33,15 +33,21 @@ springBoot {
  */
 task runTemplateClient(type: JavaExec, dependsOn: assemble) {
     classpath = sourceSets.main.runtimeClasspath
-    main = 'com.template.Client'
+    main = 'com.tokenswap.Client'
     args 'localhost:10006', 'user1', 'test'
 }
 
 /* This task will start the springboot server that connects to your node (via RPC connection). All of the http requests
  * are in the Controller file. You can leave the Server.kt and NodeRPCConnection.kt file untouched for your use.
  */
-task runTemplateServer(type: JavaExec, dependsOn: assemble) {
+task runCordaServer(type: JavaExec, dependsOn: assemble) {
     classpath = sourceSets.main.runtimeClasspath
-    main = 'com.template.webserver.Starter'
+    main = 'com.tokenswap.webserver.Starter'
     args '--server.port=10050', '--config.rpc.host=localhost', '--config.rpc.port=10006', '--config.rpc.username=user1', '--config.rpc.password=test'
+}
+
+task testConnect(type: JavaExec, dependsOn: assemble) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'com.tokenswap.TestConnect'
+/*  args */
 }

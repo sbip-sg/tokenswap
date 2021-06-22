@@ -1,0 +1,10 @@
+* Setting up the Corda server:
+  - After setting up nodes (./gradlew clean deployNodes and ./build/nodes/runnodes), you can set up the Corda server with ./gradlew runCordaServer (run from this directory or the parent directory)
+
+* Content of the website is in: clients/src/main/resources/static
+
+* You can access Corda server at localhost:10050
+
+* Server source code is at /clients/src/main/java/com/tokenswap/webserver
+
+* For now, all you can do is (fake) login and read your "house" token balance.
