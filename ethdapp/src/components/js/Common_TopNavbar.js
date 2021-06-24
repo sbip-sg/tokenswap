@@ -62,11 +62,9 @@ export const Common_TopNavbar = () => {
                 setMessage(messages => [...messages, { head: "Error", body: err.message, variant: 'info' }])
             }
         }
-
     }
 
     const handleAccountsChanged = (accounts) => {
-
         console.log('handleAccountsChanged');
         //if(!isLogged) return
         if (accounts.length === 0) {
@@ -81,14 +79,16 @@ export const Common_TopNavbar = () => {
     }
 
     useEffect(() => {
-
         window.onbeforeunload = function () { return "Prevent reload" }
+        /*
+        [COMMENT: TEMPORARY COMMENTED BECAUSE OF DEPLOYMENT ISSUE]
         window.ethereum.on('accountsChanged', handleAccountsChanged);
         window.ethereum.on('chainChanged', (_chainId) => {
             console.log(_chainId);
             setCurrentChainID(() => parseInt(_chainId, 16))
             //window.location.reload()
         });
+        */
     }, []);
 
     const SignOut = async () => {
