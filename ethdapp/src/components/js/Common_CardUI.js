@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 
 import AccountBalanceTwoToneIcon from "@material-ui/icons/AccountBalanceTwoTone";
 import AccountBalanceWalletTwoToneIcon from "@material-ui/icons/AccountBalanceWalletTwoTone";
@@ -13,7 +13,6 @@ const Color = ["from-pink-600 to-red-300", "from-blue-600 to-indigo-300", "from-
 
 export const Common_CardUI = (props) => {
     var balance = props.balance;
-    balance = balance * 9.5;
 
     return (
         <div className={`flex transform hover:scale-110 cursor-pointer transition delay-100 w-3/12 p-3 py-3 shadow-xl border rounded-xl bg-gradient-to-r ${Color[props.icon]}`}>
