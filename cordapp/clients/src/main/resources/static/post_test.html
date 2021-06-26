@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Corda login</title>
+</head>
+<body>
+<div>
+    <img src="https://www.corda.net/wp-content/uploads/2016/11/fg005_corda_b.png" alt="Corda" width="300">
+    <h4> Test POST requests </h4>
+    <form id="form" method="POST"><h5> Form </h5><button>Submit!</button></form>
+
+    <div>
+      <p id="action"> Action: </p>
+    </div>
+
+    <form id="add">
+      <h5> Add parameter </h5>
+      <label for="name">Name:</label><br>
+      <input type="text" id="names" name="name"><br>
+
+      <button id="badd" type="button"> Add </button>
+    </form>
+
+    <form id="act">
+      <h5> Change action </h5>
+      <label for="act">New action: (remember to add slash if necessary) </label>
+      <input type="text" id="acts" name="act">
+      <button type="button" id="bact"> Change </button>
+    </form>
+
+    <button id="reset"> Reset </button>
+</div>
+</body>
+  <script src="js/form.js"> </script>
+</html>

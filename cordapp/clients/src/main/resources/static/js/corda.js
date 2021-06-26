@@ -1,4 +1,4 @@
-let login_button = document.getElementById("login");
+/*let login_button = document.getElementById("login");
 login_button.addEventListener("click", function() {
   let node_div = document.getElementById("node-info");
 
@@ -19,4 +19,7 @@ login_button.addEventListener("click", function() {
     }
   };
   request.send();
-});
+}); */
+
+let loginForm = document.getElementById("login-form");
+loginForm.action = "/login";
