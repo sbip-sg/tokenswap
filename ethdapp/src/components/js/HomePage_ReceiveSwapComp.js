@@ -1,6 +1,7 @@
 import React from 'react'
 
 import SwapHorizontalCircleTwoToneIcon from "@material-ui/icons/SwapHorizontalCircleTwoTone";
+import PostAddTwoToneIcon from "@material-ui/icons/PostAddTwoTone";
 import CancelPresentationSharpIcon from "@material-ui/icons/CancelPresentationSharp";
 import SettingsBackupRestoreTwoToneIcon from "@material-ui/icons/SettingsBackupRestoreTwoTone";
 
@@ -97,15 +98,21 @@ export const HomePage_ReceiveSwapComp = () => {
                 </div>
 
                 <div className="flex flex-wrap pl-4 pr-4 mt-6 mb-6 space-x-3">
-                    <div className="w-3/12 bg-white">&nbsp;</div>
+                    <div className="w-1/12 bg-white">&nbsp;</div>
                     <div className="w-3/12 bg-white h-auto">
-                        <button class="bg-purple-300 hover:bg-gray-400 text-gray-800 text-sm font-bold py-2 px-4 rounded inline-flex items-center">
-                            <CancelPresentationSharpIcon />
-                            <span>&nbsp;Withdraw Swap Request</span>
+                        <button class="bg-purple-400 hover:bg-gray-400 text-gray-800 text-sm font-bold py-2 px-4 rounded inline-flex items-center">
+                            <PostAddTwoToneIcon />
+                            <span>&nbsp;Deploy Smart Contract</span>
                         </button>
                     </div>
                     <div className="w-3/12 bg-white h-auto">
-                        <button class="bg-purple-300 hover:bg-gray-400 text-gray-800 text-sm font-bold py-2 px-4 rounded inline-flex items-center">
+                        <button class="bg-purple-400 hover:bg-gray-400 text-gray-800 text-sm font-bold py-2 px-4 rounded inline-flex items-center">
+                            <CancelPresentationSharpIcon />
+                            <span>&nbsp;Withdraw Exchanged Swap</span>
+                        </button>
+                    </div>
+                    <div className="w-3/12 bg-white h-auto">
+                        <button class="bg-purple-400 hover:bg-gray-400 text-gray-800 text-sm font-bold py-2 px-4 rounded inline-flex items-center">
                             <SettingsBackupRestoreTwoToneIcon />
                             <span>&nbsp;Refund Exchanged Swap</span>
                         </button>

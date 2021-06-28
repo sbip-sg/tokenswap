@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { Common_CardUI } from "./Common_CardUI.js";
 
 export const HomePage_DashboardComp = () => {
