@@ -7,4 +7,4 @@
 
 * Server source code is at /clients/src/main/java/com/tokenswap/webserver
 
-* For now, all you can do is (fake) login and read your "house" token balance.
+* You can log in and interact with Corda nodes. APIs are at https://docs.google.com/document/d/1Nq7i-TEUdqBhN14qAzBcQTyX5EM-KDJLy4yXiBvaZos/edit?usp=sharing
