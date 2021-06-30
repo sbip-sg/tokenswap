@@ -1,4 +1,5 @@
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
 sourceSets {
     main {
@@ -7,7 +8,9 @@ sourceSets {
         }
     }
 }
-
+repositories {
+    mavenCentral()
+}
 dependencies {
     // Corda dependencies.
     compile "$corda_release_group:corda-rpc:$corda_release_version"
@@ -15,12 +18,23 @@ dependencies {
     // CorDapp dependencies.
     compile project(":contracts")
     compile project(":workflows")
-    compile("org.springframework.boot:spring-boot-starter-websocket:$spring_boot_version") {
-        exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
-    }
     compile "org.apache.logging.log4j:log4j-slf4j-impl:${log4j_version}"
     compile "org.apache.logging.log4j:log4j-web:${log4j_version}"
     compile "org.slf4j:jul-to-slf4j:$slf4j_version"
+    compile("org.springframework.boot:spring-boot-starter-websocket:$spring_boot_version") {
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+    }
+    compile("org.springframework.boot:spring-boot-starter-data-jpa:$spring_boot_version"){
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+    }
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.48'
+
+//    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+//    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+//    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+//    runtimeOnly 'mysql:mysql-connector-java'
+//    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 }
 
 springBoot {
