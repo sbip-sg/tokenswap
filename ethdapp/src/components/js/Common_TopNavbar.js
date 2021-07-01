@@ -18,26 +18,18 @@ export const Common_TopNavbar = () => {
     const [currentAccount, setCurrentAccount] = useState('');
     const [isLogged, setIsLogged] = useState(false);
     const [currentChainID, setCurrentChainID] = useState(-1);
-    const [messages, setMessage] = useState([
-
-    ]);
+    const [messages, setMessage] = useState([]);
 
     useEffect(() => {
-        window.onbeforeunload = function () { return "Prevent reload" }
-        /*
-        [COMMENT: TEMPORARY COMMENTED BECAUSE OF DEPLOYMENT ISSUE]
+        window.onbeforeunload = function () { return "Prevent reload" };        
         window.ethereum.on('accountsChanged', handleAccountsChanged);
         window.ethereum.on('chainChanged', (_chainId) => {
-            console.log(_chainId);
-            setCurrentChainID(() => parseInt(_chainId, 16))
-            //window.location.reload()
+            setCurrentChainID(() => parseInt(_chainId, 16));
         });
-        */
     }, []);
 
     const handleAccountsChanged = (accounts) => {
         console.log('handleAccountsChanged');
-        // if(!isLogged) return
         if (accounts.length === 0) {
             // MetaMask is locked or the user has not connected any accounts
             setMessage(messages => [...messages, { head: "User Rejected Request", body: 'Please connect to MetaMask.', variant: 'info' }]);
@@ -49,9 +41,22 @@ export const Common_TopNavbar = () => {
         }
     };
 
-    const ConnectMetamaskWallet = async () => {
-        console.log("Try Connect");
+    const SignInMetamaskWallet = async () => {
+        const provider = await detectEthereumProvider();
+        const web3 = new Web3(provider);
+        if (!provider) {
+            setMessage(messages => [...messages, { head: "MetaMask Wallet Not Found", body: `Please install MetaMask!`, variant: 'warning' }]);
+        } else {
+            const accountAddress = await ConnectMetamaskWallet();
+            web3.eth.getBalance(accountAddress, function (err, accountBalance) {
+                if (err === null && accountAddress) {
+                    setMessage(messages => [...messages, { head: "MetaMask Account Informaton", body: `Ether Balance: ${accountBalance} Ether Address: ${accountAddress}`, variant: 'success' }]);
+                }
+            });
+        }
+    };
 
+    const ConnectMetamaskWallet = async () => {
         try {
             await window.ethereum.enable();
 
@@ -64,31 +69,15 @@ export const Common_TopNavbar = () => {
             return accounts[0];
         } catch (err) {
             if (err.code === 4001) {
-                // EIP-1193 userRejectedRequest error
-                // If this happens, the user rejected the connection request.
+                // EIP-1193 userRejectedRequest error - if this error happens, the user rejected the connection request.
                 console.log('Please connect to MetaMask.');
                 setMessage(messages => [...messages, { head: "User Rejected Request", body: 'Please connect to MetaMask.', variant: 'info' }]);
-
             } else if (err.code === -32002) {
                 console.log('Please unlock MetaMask.');
                 setMessage(messages => [...messages, { head: "User Request Pending", body: 'Please unlock MetaMask and try agin.', variant: 'info' }]);
             } else {
                 console.error(err);
                 setMessage(messages => [...messages, { head: "Error", body: err.message, variant: 'info' }]);
-            }
-        }
-    };
-
-    const SignInMetamaskWallet = async () => {
-        /* DETECT PROVIDER */
-        const provider = await detectEthereumProvider();
-        const web3 = new Web3(provider);
-        if (!provider) {
-            setMessage(messages => [...messages, { head: "Wallet not found", body: `Please install MetaMask!`, variant: 'warning' }]);
-        } else {
-            const address = await ConnectMetamaskWallet();
-            if (address) {
-                setMessage(messages => [...messages, { head: "User Login", body: `addres: ${address}`, variant: 'success' }]);
             }
         }
     };
@@ -112,11 +101,9 @@ export const Common_TopNavbar = () => {
             return (
                 <Alert variant={props.variant ? props.variant : 'dark'} onClose={close} dismissible>
                     <Alert.Heading>{props.head}</Alert.Heading>
-                    <p>
-                        {props.body}
-                    </p>
+                    <p>{props.body}</p>
                 </Alert>
-            )
+            );
         } else {
             return (<></>)
         }
@@ -137,9 +124,6 @@ export const Common_TopNavbar = () => {
                 <Link style={{ textDecoration: 'none' }} onClick={SignInMetamaskWallet}>
                     {isLogged ? shortAddr() : <AccountBalanceWalletTwoToneIcon color="primary" />}
                 </Link>
-                <Link style={{ textDecoration: 'none', display: isLogged ? "display" : "none" }} onClick={SignOutMetamaskWallet}>
-                    {isLogged ? shortAddr() : <AccountBalanceWalletTwoToneIcon color="secondary" />}
-                </Link>
 
                 <Link style={{ textDecoration: 'none' }}
                     onClick={() => {
@@ -158,6 +142,7 @@ export const Common_TopNavbar = () => {
                 <Link style={{ textDecoration: 'none' }}
                     onClick={() => {
                         auth.logout(() => {
+                            SignOutMetamaskWallet();
                             history.push("/");
                         });
                     }}

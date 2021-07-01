@@ -22,10 +22,10 @@ export const HomePage_ReceiveSwapComp = () => {
                         </label>
                         <div className="mt-1 relative rounded-md shadow-sm border-2 border-purple-400">
                             <input type="text" name="txt_currencyForExc" id="txt_currencyForExc"
-                                className="md:w-auto pl-3 pr-3 rounded-md border-r border-purple-400" placeholder="Currency Value" />
+                                className="md:w-auto pl-3 pr-3 rounded-md border-r border-purple-400" placeholder="Currency Value" disabled />
                             <div className="absolute inset-y-0 right-0 flex items-center">
                                 <select id="sel_currencyForExc" name="sel_currencyForExc"
-                                    className="h-full py-0 pl-3 pr-3 bg-transparent rounded-md border-purple-400">
+                                    className="h-full py-0 pl-3 pr-3 bg-transparent rounded-md border-purple-400" disabled>
                                     <option>House Token</option>
                                     <option>Ether</option>
                                 </select>
@@ -41,10 +41,10 @@ export const HomePage_ReceiveSwapComp = () => {
                         </label>
                         <div className="mt-1 relative rounded-md shadow-sm border-2 border-purple-400">
                             <input type="text" name="txt_currencyToRec" id="txt_currencyToRec"
-                                className="md:w-auto pl-3 pr-3 rounded-md border-r border-purple-400" placeholder="Currency Value" />
+                                className="md:w-auto pl-3 pr-3 rounded-md border-r border-purple-400" placeholder="Currency Value" disabled />
                             <div className="absolute inset-y-0 right-0 flex items-center">
                                 <select id="sel_currencyToRec" name="sel_currencyToRec"
-                                    className="h-full py-0 pl-3 pr-3 bg-transparent rounded-md border-purple-400">
+                                    className="h-full py-0 pl-3 pr-3 bg-transparent rounded-md border-purple-400" disabled>
                                     <option>House Token</option>
                                     <option>Ether</option>
                                 </select>
@@ -55,8 +55,8 @@ export const HomePage_ReceiveSwapComp = () => {
 
                 <div className="flex flex-wrap pl-4 pr-4 pb-2 mt-1">
                     <div className="w-7/12 bg-white h-auto">
-                        <label htmlFor="txt_exchangeRate" className="block text-sm font-medium text-red-500 text-xs">
-                            (Exchange Rate: 1 HT = 2 Ether)
+                        <label htmlFor="txt_exchangeRate" className="block text-xs font-medium text-red-500">
+                            [ Exchange Rate: x Ether = x House Token ]
                         </label>
                     </div>
                     <div className="w-5/12 bg-white">&nbsp;</div>
