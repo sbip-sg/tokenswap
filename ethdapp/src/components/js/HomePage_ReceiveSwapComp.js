@@ -1,6 +1,7 @@
 import React from 'react'
 
 import SwapHorizontalCircleTwoToneIcon from "@material-ui/icons/SwapHorizontalCircleTwoTone";
+import PostAddTwoToneIcon from "@material-ui/icons/PostAddTwoTone";
 import CancelPresentationSharpIcon from "@material-ui/icons/CancelPresentationSharp";
 import SettingsBackupRestoreTwoToneIcon from "@material-ui/icons/SettingsBackupRestoreTwoTone";
 
@@ -21,10 +22,10 @@ export const HomePage_ReceiveSwapComp = () => {
                         </label>
                         <div className="mt-1 relative rounded-md shadow-sm border-2 border-purple-400">
                             <input type="text" name="txt_currencyForExc" id="txt_currencyForExc"
-                                className="md:w-auto pl-3 pr-3 rounded-md border-r border-purple-400" placeholder="Currency Value" />
+                                className="md:w-auto pl-3 pr-3 rounded-md border-r border-purple-400" placeholder="Currency Value" disabled />
                             <div className="absolute inset-y-0 right-0 flex items-center">
                                 <select id="sel_currencyForExc" name="sel_currencyForExc"
-                                    className="h-full py-0 pl-3 pr-3 bg-transparent rounded-md border-purple-400">
+                                    className="h-full py-0 pl-3 pr-3 bg-transparent rounded-md border-purple-400" disabled>
                                     <option>House Token</option>
                                     <option>Ether</option>
                                 </select>
@@ -40,10 +41,10 @@ export const HomePage_ReceiveSwapComp = () => {
                         </label>
                         <div className="mt-1 relative rounded-md shadow-sm border-2 border-purple-400">
                             <input type="text" name="txt_currencyToRec" id="txt_currencyToRec"
-                                className="md:w-auto pl-3 pr-3 rounded-md border-r border-purple-400" placeholder="Currency Value" />
+                                className="md:w-auto pl-3 pr-3 rounded-md border-r border-purple-400" placeholder="Currency Value" disabled />
                             <div className="absolute inset-y-0 right-0 flex items-center">
                                 <select id="sel_currencyToRec" name="sel_currencyToRec"
-                                    className="h-full py-0 pl-3 pr-3 bg-transparent rounded-md border-purple-400">
+                                    className="h-full py-0 pl-3 pr-3 bg-transparent rounded-md border-purple-400" disabled>
                                     <option>House Token</option>
                                     <option>Ether</option>
                                 </select>
@@ -54,8 +55,8 @@ export const HomePage_ReceiveSwapComp = () => {
 
                 <div className="flex flex-wrap pl-4 pr-4 pb-2 mt-1">
                     <div className="w-7/12 bg-white h-auto">
-                        <label htmlFor="txt_exchangeRate" className="block text-sm font-medium text-red-500 text-xs">
-                            (Exchange Rate: 1 HT = 2 Ether)
+                        <label htmlFor="txt_exchangeRate" className="block text-xs font-medium text-red-500">
+                            [ Exchange Rate: x Ether = x House Token ]
                         </label>
                     </div>
                     <div className="w-5/12 bg-white">&nbsp;</div>
@@ -97,15 +98,21 @@ export const HomePage_ReceiveSwapComp = () => {
                 </div>
 
                 <div className="flex flex-wrap pl-4 pr-4 mt-6 mb-6 space-x-3">
-                    <div className="w-3/12 bg-white">&nbsp;</div>
+                    <div className="w-1/12 bg-white">&nbsp;</div>
                     <div className="w-3/12 bg-white h-auto">
-                        <button class="bg-purple-300 hover:bg-gray-400 text-gray-800 text-sm font-bold py-2 px-4 rounded inline-flex items-center">
-                            <CancelPresentationSharpIcon />
-                            <span>&nbsp;Withdraw Swap Request</span>
+                        <button class="bg-purple-400 hover:bg-gray-400 text-gray-800 text-sm font-bold py-2 px-4 rounded inline-flex items-center">
+                            <PostAddTwoToneIcon />
+                            <span>&nbsp;Deploy Smart Contract</span>
                         </button>
                     </div>
                     <div className="w-3/12 bg-white h-auto">
-                        <button class="bg-purple-300 hover:bg-gray-400 text-gray-800 text-sm font-bold py-2 px-4 rounded inline-flex items-center">
+                        <button class="bg-purple-400 hover:bg-gray-400 text-gray-800 text-sm font-bold py-2 px-4 rounded inline-flex items-center">
+                            <CancelPresentationSharpIcon />
+                            <span>&nbsp;Withdraw Exchanged Swap</span>
+                        </button>
+                    </div>
+                    <div className="w-3/12 bg-white h-auto">
+                        <button class="bg-purple-400 hover:bg-gray-400 text-gray-800 text-sm font-bold py-2 px-4 rounded inline-flex items-center">
                             <SettingsBackupRestoreTwoToneIcon />
                             <span>&nbsp;Refund Exchanged Swap</span>
                         </button>

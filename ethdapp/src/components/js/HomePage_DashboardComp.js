@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { Common_CardUI } from "./Common_CardUI.js";
 
 export const HomePage_DashboardComp = () => {
@@ -48,10 +48,10 @@ export const HomePage_DashboardComp = () => {
                 </p>
             </div>
             <div className="flex pl-4 pr-4 mt-2 space-x-3">
-                <Common_CardUI title="House Token (Balance)" balance={409.0790} icon={0} />
-                <Common_CardUI title="Ether (Balance)" balance={300.0790} icon={1} />
-                <Common_CardUI title="Pending Swap Requests" balance={20} icon={2} />
-                <Common_CardUI title="Completed Swap Requests" balance={33} icon={3} />
+                <Common_CardUI title="House Token (Balance)" balance={0} icon={0} />
+                <Common_CardUI title="Ether (Balance)" balance={0} icon={1} />
+                <Common_CardUI title="Pending Swap Requests" balance={0} icon={2} />
+                <Common_CardUI title="Completed Swap Requests" balance={0} icon={3} />
             </div>
             <div className="flex ml-3 mt-6 space-x-6 mr-4">
                 {/* Dashboard Content Body */}
@@ -101,7 +101,7 @@ export const HomePage_DashboardComp = () => {
                         <div className="flex justify-center items-center h-48 w-48 rounded-full" style={{ borderWidth: "16px" }} >
                             <div className="flex justify-center items-center border-gray-200 h-44 w-44 rounded-full">
                                 <div className="flex flex-col justify-center items-center shadow-2xl h-32 w-32 rounded-full">
-                                    <p className="text-gray-800 font-semibold">17.0216 Ether</p>
+                                    <p className="text-gray-800 font-semibold">0 Ether</p>
                                 </div>
                             </div>
                         </div>
