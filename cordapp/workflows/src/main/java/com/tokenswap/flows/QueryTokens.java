@@ -54,8 +54,8 @@ public class QueryTokens {
                 TokenPointer<FungibleHouseTokenState> tokenPointer = evolvableTokenType.toPointer(FungibleHouseTokenState.class);
                 //query balance or each different Token
                 Amount<TokenType> amount = QueryUtilities.tokenBalance(getServiceHub().getVaultService(), tokenPointer);
-                result += "\nYou currently have "+ amount.getQuantity()+ " " + symbol + " Tokens issued by "
-                        +evolvableTokenType.getMaintainer().getName().getOrganisation()+"\n";
+                //result += "\nYou currently have "+ amount.getQuantity()+ " " + symbol + " Tokens issued by "+evolvableTokenType.getMaintainer().getName().getOrganisation()+"\n";
+                result += amount.getQuantity();
             }
             return result;
         }
