@@ -12,6 +12,8 @@ repositories {
     mavenCentral()
 }
 dependencies {
+    implementation 'org.projectlombok:lombok:1.18.16'
+
     // Corda dependencies.
     compile "$corda_release_group:corda-rpc:$corda_release_version"
 
@@ -28,6 +30,7 @@ dependencies {
         exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
     }
     compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.48'
+    compile "com.vladmihalcea:hibernate-types-52:2.9.11"
 
 //    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 //    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
