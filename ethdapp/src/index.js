@@ -15,7 +15,9 @@ export const App = () => {
         <Route exact path="/" component={LoginPage} />
         <ProtectedRoute exact path="/dashboard" component={HomePage_LoggedIn} />
         <ProtectedRoute exact path="/dashboard/initiate-swap" component={HomePage_LoggedIn} />
-        <ProtectedRoute exact path="/dashboard/receive-swap" component={HomePage_LoggedIn} />
+        <ProtectedRoute exact path="/dashboard/pending-swapslist" component={HomePage_LoggedIn} />
+        <ProtectedRoute exact path="/dashboard/swap-details" component={HomePage_LoggedIn} />
+        <ProtectedRoute exact path="/dashboard/swap-historylist" component={HomePage_LoggedIn} />
         <Route path="*" component={PageNotFound} />
       </Switch>
     </div>

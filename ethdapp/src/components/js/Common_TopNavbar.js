@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, Link } from "react-router-dom";
 import { Alert } from "react-bootstrap";
+
 import Web3 from "web3";
+import detectEthereumProvider from "@metamask/detect-provider";
 
 import auth from "../support/Auth.js";
 
@@ -10,7 +12,6 @@ import AccountBalanceWalletTwoToneIcon from "@material-ui/icons/AccountBalanceWa
 import NotificationsTwoToneIcon from "@material-ui/icons/NotificationsTwoTone";
 import AccountCircleTwoToneIcon from "@material-ui/icons/AccountCircleTwoTone";
 import ExitToAppTwoToneIcon from "@material-ui/icons/ExitToAppTwoTone";
-import detectEthereumProvider from "@metamask/detect-provider";
 
 export const Common_TopNavbar = () => {
     const history = useHistory();
@@ -37,7 +38,7 @@ export const Common_TopNavbar = () => {
             console.log(accounts[0]);
             console.log(messages);
             setCurrentAccount(() => accounts[0]);
-            setMessage(messages => [...messages, { head: "Account Changed", body: `addres: ${accounts[0]}`, variant: 'warning' }]);
+            setMessage(messages => [...messages, { head: "Account Changed", body: `Address: ${accounts[0]}`, variant: 'warning' }]);
         }
     };
 
