@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useHistory, Link } from "react-router-dom";
 import { Alert } from "react-bootstrap";
+
 import Web3 from "web3";
+import detectEthereumProvider from "@metamask/detect-provider";
 
 import HomeTwoToneIcon from "@material-ui/icons/HomeTwoTone";
 import PostAddTwoToneIcon from "@material-ui/icons/PostAddTwoTone";
@@ -11,7 +13,6 @@ import MonetizationOnTwoToneIcon from "@material-ui/icons/MonetizationOnTwoTone"
 import AccountBalanceTwoToneIcon from "@material-ui/icons/AccountBalanceTwoTone";
 import PersonOutlineTwoToneIcon from "@material-ui/icons/PersonOutlineTwoTone";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import detectEthereumProvider from "@metamask/detect-provider";
 
 export const Common_SideNavbar = () => {
     const history = useHistory();
@@ -39,7 +40,6 @@ export const Common_SideNavbar = () => {
             } else {
                 /* THIS SEGMENT REQUIRES FIXING BECAUSE IF USER CHOSE NOT TO CONNECT TO METAMASK, THE NEXT CONNECTION WILL HAVE ERROR MESSAGE */
                 window.alert("Connection request rejected by user. Please connect to MetaMask.");
-                history.push("/dashboard");
             }
         }
     };
@@ -92,15 +92,15 @@ export const Common_SideNavbar = () => {
                         </div>
                     </div>
                     <div className="">
-                        <Link to="/dashboard/receive-swap" style={{ textDecoration: 'none' }}>
+                        <Link to="/dashboard/pending-swapslist" style={{ textDecoration: 'none' }}>
                             <div className="flex p-2 text-purple-800 text-sm space-x-4 0 hover:bg-purple-400 hover:text-white cursor-pointer">
                                 <SyncAltIcon />
-                                <p>Receive Swap</p>
+                                <p>Pending Swaps</p>
                             </div>
                         </Link>
                     </div>
                     <div className="">
-                        <Link to="/" style={{ textDecoration: 'none' }}>
+                        <Link to="/dashboard/swap-historylist" style={{ textDecoration: 'none' }}>
                             <div className="flex p-2 text-purple-800 text-sm space-x-4 0 hover:bg-purple-400 hover:text-white cursor-pointer">
                                 <HistoryTwoToneIcon />
                                 <p>Swap History</p>

@@ -4,39 +4,67 @@ import { Common_CardUI } from "./Common_CardUI.js";
 export const HomePage_DashboardComp = () => {
     const swapTransactionList = [
         {
-            partyA: 'Jane Cooper',
-            partyB: 'David Cook',
-            swapRate: '1 HT ~ 2.2208 Ether',
-            swapStatus: 'Completed',
+            namePartyA: 'Alice',
+            addressPartyA: '0xfn2me1dk7udk4',
+            namePartyB: 'David Cook',
+            addressPartyB: '0xg5am21dn8uds1',
+            swapRate: '1 HouseToken ~ 2.2208 Ether',
+            swapStatus: 'Pending Swap',
             lastTransactionDate: '18 June 2021'
         },
         {
-            partyA: 'Jenny White',
-            partyB: 'Ronald Stephen',
-            swapRate: '1 Ether ~ 0.9960 HT',
+            namePartyA: 'Jenny White',
+            addressPartyA: '0xg2ns4odn1zms3',
+            namePartyB: 'Alice',
+            addressPartyB: '0xfn2me1dk7udk4',
+            swapRate: '1 Ether ~ 0.9960 HouseToken',
             swapStatus: 'Pending Swap',
             lastTransactionDate: '17 June 2021'
         },
         {
-            partyA: 'Lisa Edison',
-            partyB: 'Patricia Morrison',
-            swapRate: '1 HT ~ 3.111 Ether',
+            namePartyA: 'Lisa Edison',
+            addressPartyA: '0xa7ng9kd2ad2g9',
+            namePartyB: 'Alice',
+            addressPartyB: '0xfn2me1dk7udk4',
+            swapRate: '1 HouseToken ~ 3.111 Ether',
             swapStatus: 'Completed',
             lastTransactionDate: '14 June 2021'
         },
         {
-            partyA: 'Robert Noah',
-            partyB: 'Jennifer Emma',
-            swapRate: '1 HT ~ 4.082 Ether',
+            namePartyA: 'Alice',
+            addressPartyA: '0xfn2me1dk7udk4',
+            namePartyB: 'Jennifer Emma',
+            addressPartyB: '0xky9s4soz2u4dz',
+            swapRate: '1 HouseToken ~ 4.082 Ether',
             swapStatus: 'Completed',
             lastTransactionDate: '14 June 2021'
         },
         {
-            partyA: 'Madeline Olivia',
-            partyB: 'Helen Aiden',
-            swapRate: '1 HT ~ 4.082 Ether',
-            swapStatus: 'Completed',
+            namePartyA: 'Alice',
+            addressPartyA: '0xfn2me1dk7udk4',
+            namePartyB: 'Helen Aiden',
+            addressPartyB: '0xbs0fga2y3v6ds',
+            swapRate: '1 HouseToken ~ 4.082 Ether',
+            swapStatus: 'Pending Swap',
             lastTransactionDate: '13 June 2021'
+        },
+        {
+            namePartyA: 'Maggie Blue',
+            addressPartyA: '0xuvx3s52st2sgn',
+            namePartyB: 'Alice',
+            addressPartyB: '0xfn2me1dk7udk4',
+            swapRate: '1 HouseToken ~ 3.111 Ether',
+            swapStatus: 'Completed',
+            lastTransactionDate: '12 June 2021'
+        },
+        {
+            namePartyA: 'Alice',
+            addressPartyA: '0xz2fhaes62g2df',
+            namePartyB: 'Tony Blaine',
+            addressPartyB: '0xky9s4soz2u4dz',
+            swapRate: '1 HouseToken ~ 1.224 Ether',
+            swapStatus: 'Pending Swap',
+            lastTransactionDate: '09 June 2021'
         }
     ];
 
@@ -63,24 +91,32 @@ export const HomePage_DashboardComp = () => {
                         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                             <div className="py-2 align-middle inline-block max-w-full sm:px-6 lg:px-8">
                                 <div className="shadow max-h-80 overflow-auto border-b border-gray-200 sm:rounded-lg">
-                                    <table className="min-w-full divide-y divide-gray-200">
-                                        <thead className="bg-purple-400 w-auto">
+                                    <table className="min-w-full">
+                                        <thead className="divide-y divide-gray-300">
                                             <tr>
-                                                <th scope="col" className="top-0 px-4 py-3 text-left text-sm text-white font-medium text-gray-500 uppercase tracking-wider">Party A</th>
-                                                <th scope="col" className="top-0 px-4 py-3 text-left text-sm text-white font-medium text-gray-500 uppercase tracking-wider">Party B</th>
-                                                <th scope="col" className="top-0 px-4 py-3 text-left text-sm text-white font-medium text-gray-500 uppercase tracking-wider">Swap Rate</th>
-                                                <th scope="col" className="top-0 px-4 py-3 text-left text-sm text-white font-medium text-gray-500 uppercase tracking-wider">Swap Status</th>
-                                                <th scope="col" className="top-0 px-4 py-3 text-left text-sm text-white font-medium text-gray-500 uppercase tracking-wider">Last Transaction Date</th>
+                                                <th scope="col" className="sticky top-0 px-4 py-3 bg-purple-400 text-white text-left text-sm font-medium uppercase">Party A</th>
+                                                <th scope="col" className="sticky top-0 px-4 py-3 bg-purple-400 text-white text-left text-sm font-medium uppercase">Party B</th>
+                                                <th scope="col" className="sticky top-0 px-4 py-3 bg-purple-400 text-white text-left text-sm font-medium uppercase">Swap Rate</th>
+                                                <th scope="col" className="sticky top-0 px-4 py-3 bg-purple-400 text-white text-left text-sm font-medium uppercase">Swap Status</th>
+                                                <th scope="col" className="sticky top-0 px-4 py-3 bg-purple-400 text-white text-left text-sm font-medium uppercase">Last Transaction Date</th>
                                             </tr>
                                         </thead>
-                                        <tbody className="bg-white divide-y divide-gray-200 w-auto">
+                                        <tbody className="divide-y divide-gray-300">
                                             {swapTransactionList.map((swapTransaction) => (
-                                                <tr key={swapTransaction.email} className="hover:bg-purple-200 cursor-pointer">
-                                                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">{swapTransaction.partyA}</td>
-                                                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">{swapTransaction.partyB}</td>
-                                                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">{swapTransaction.swapRate}</td>
-                                                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">{swapTransaction.swapStatus}</td>
-                                                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">{swapTransaction.lastTransactionDate}</td>
+                                                <tr key={swapTransaction.addressPartyA} className="cursor-pointer">
+                                                    <td className="px-4 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">
+                                                        {swapTransaction.namePartyA}<br/>
+                                                        ({(swapTransaction.addressPartyA).substr(0, 4)}....{(swapTransaction.addressPartyA).substr((swapTransaction.addressPartyA).length-4, (swapTransaction.addressPartyA).length)})
+                                                    </td>
+                                                    <td className="px-4 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">
+                                                        {swapTransaction.namePartyB}<br/>
+                                                        ({(swapTransaction.addressPartyB).substr(0, 4)}....{(swapTransaction.addressPartyB).substr((swapTransaction.addressPartyB).length-4, (swapTransaction.addressPartyB).length)})
+                                                    </td>
+                                                    <td className="px-4 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">
+                                                        {(swapTransaction.swapRate).split(" ~ ")[0]} ~ <br/>{(swapTransaction.swapRate).split(" ~ ")[1]}
+                                                    </td>
+                                                    <td className="px-4 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">{swapTransaction.swapStatus}</td>
+                                                    <td className="px-4 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">{swapTransaction.lastTransactionDate}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
