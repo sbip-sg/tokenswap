@@ -3,15 +3,13 @@ package com.tokenswap.webserver.control;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tokenswap.webserver.APIResult;
 import com.tokenswap.webserver.db.HTLCStatus;
 import com.tokenswap.webserver.db.HTLCStatusRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-@Controller
+@RestController
 @RequestMapping(path = "/htlc")
 public class HTLCStatusController {
 
@@ -27,18 +25,15 @@ public class HTLCStatusController {
     private HTLCStatusRepository htlcStatusRepository;
 
     @PostMapping(path = "/initswap")
-    public @ResponseBody
-    HashMap<String, String> initSwap(@RequestParam String SendParty,
-                                     @RequestParam String ReceiveParty,
-                                     @RequestParam String SendPartyAddress,
-                                     @RequestParam String ReceivePartyAddress,
-                                     @RequestParam String SendType,
-                                     @RequestParam String ReceiveType,
-                                     @RequestParam String SendValue,
-                                     @RequestParam String ReceiveValue,
-                                     @RequestParam String HTLCHash){
-        HashMap<String, String> response = new HashMap<String, String> ();
-
+    public APIResult initSwap(@RequestParam String SendParty,
+                              @RequestParam String ReceiveParty,
+                              @RequestParam String SendPartyAddress,
+                              @RequestParam String ReceivePartyAddress,
+                              @RequestParam String SendType,
+                              @RequestParam String ReceiveType,
+                              @RequestParam String SendValue,
+                              @RequestParam String ReceiveValue,
+                              @RequestParam String HTLCHash){
         HTLCStatus htlcStatus = new HTLCStatus();
         htlcStatus.setSendparty(SendParty);
         htlcStatus.setReceiveparty(ReceiveParty);
@@ -51,19 +46,15 @@ public class HTLCStatusController {
         htlcStatus.setHtlchash(HTLCHash);
         htlcStatus.setHtlcstatus("process");
         htlcStatusRepository.save(htlcStatus);
-        response.put("status", "SUCCESS");
-        return response;
-
+        return APIResult.createOKMessage("Init Sucess");
     }
     //update status
     @PostMapping(path = "/updatehtlc")
-    public @ResponseBody
-    HashMap<String, String> updateHTLCStatus(@RequestParam Integer HTLCId, @RequestParam String status, @RequestParam String PartyName){
-        HashMap<String,String> response = new HashMap<>();
+    public APIResult updateHTLCStatus(@RequestParam Integer HTLCId, @RequestParam String status, @RequestParam String PartyName){
         Optional<HTLCStatus> result = htlcStatusRepository.findById(HTLCId);
         HTLCStatus htlcStatus = result.orElse(null);
         if(htlcStatus == null){
-            response.put("status","Failed, not find htlc");
+          return APIResult.createNg("No such HTLC recorde");
         }
         else {
             if(PartyName.equals(htlcStatus.getSendparty())){
@@ -77,40 +68,42 @@ public class HTLCStatusController {
                 htlcStatus.setHtlcstatus("finished");
             }
             htlcStatusRepository.save(htlcStatus);
-            response.put("status","Success");
+           return APIResult.createOKMessage("Update sucess");
         }
-        return response;
     }
 
     //gethtlc_list
     @PostMapping(path = "/currenthtlc")
-    public @ResponseBody
-   HashMap<String, String> currentHTLCStatusList(@RequestParam String PartyName) throws JsonProcessingException {
+    public APIResult currentHTLCStatusList(@RequestParam String PartyName) throws JsonProcessingException {
       //
         List<HTLCStatus> htlclist = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         htlclist.addAll(htlcStatusRepository.findBySendpartyAndHtlcstatus(PartyName,"process"));
         htlclist.addAll(htlcStatusRepository.findByReceivepartyAndHtlcstatus(PartyName,"process"));
-        HashMap<String,String> response = new HashMap<>();
-        response.put("status","Success");
-        response.put("data",mapper.writeValueAsString(htlclist));
-        return response;
+        return APIResult.createOk(mapper.writeValueAsString(htlclist));
+    }
+
+    //gethtlc_list
+    @PostMapping(path = "/historyhtlc")
+    public APIResult historyHTLCStatusList(@RequestParam String PartyName) throws JsonProcessingException {
+        //
+        List<HTLCStatus> htlclist = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        htlclist.addAll(htlcStatusRepository.findBySendpartyAndHtlcstatus(PartyName,"finished"));
+        htlclist.addAll(htlcStatusRepository.findByReceivepartyAndHtlcstatus(PartyName,"finished"));
+        return APIResult.createOk(mapper.writeValueAsString(htlclist));
     }
     //getone_htlc
     @PostMapping(path = "/gethtlc")
-    public @ResponseBody
-    HashMap<String,String> getHTLCStatus(@RequestParam Integer HTLCId) throws JsonProcessingException {
-        HashMap<String,String> response = new HashMap<>();
+    public APIResult getHTLCStatus(@RequestParam Integer HTLCId) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Optional<HTLCStatus> result = htlcStatusRepository.findById(HTLCId);
         HTLCStatus htlcStatus = result.orElse(null);
         if(htlcStatus == null){
-            response.put("status","Failed, not find htlc");
+            return APIResult.createNg("Not find HTLC");
         }
         else {
-            response.put("status","Success");
-            response.put("data",mapper.writeValueAsString(htlcStatus));
+            return APIResult.createOk(mapper.writeValueAsString(htlcStatus));
         }
-        return response;
     }
 }
