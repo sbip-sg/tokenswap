@@ -47,7 +47,7 @@ public class CordaController {
 /*    private final CordaRPCOps proxy;
     private final static Logger logger = LoggerFactory.getLogger(ControllerX.class); */
 
-    private ConcurrentHashMap<UUID, CordaRPCOps> loginMap;
+    public static ConcurrentHashMap<UUID, CordaRPCOps> loginMap;
     @Autowired
     private HTLCStatusRepository htlcStatusRepository;
     @Autowired

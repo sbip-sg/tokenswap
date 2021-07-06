@@ -7,5 +7,5 @@ import java.util.Optional;
 public interface HTLCSecretRepository extends CrudRepository<HTLCSecret, Integer> {
 
     Optional<HTLCSecret> findById(Integer id);
-    HTLCSecret findByInitpartyAndAndHtlcid(String Initparty,String htlcid);
+    HTLCSecret findByInitpartyAndAndHtlcid(String Initparty,Integer Htlcid);
 }
