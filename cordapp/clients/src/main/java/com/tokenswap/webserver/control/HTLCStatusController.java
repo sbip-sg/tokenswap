@@ -18,6 +18,7 @@ import java.util.*;
 
 
 @RestController
+@CrossOrigin
 @RequestMapping(path = "/htlc")
 public class HTLCStatusController {
 
@@ -30,9 +31,13 @@ public class HTLCStatusController {
     @PostMapping(path = "/updatehtlc")
     public APIResult updateHTLCStatus(
             @CookieValue(defaultValue = "") String cordaUUID,
-            @RequestParam Integer HTLCId,
-            @RequestParam String status,
-            @RequestParam String PartyName){
+            @RequestBody HashMap<String,String> requestdata){
+            // @RequestParam Integer HTLCId,
+            // @RequestParam String status,
+            // @RequestParam String PartyName){
+        Integer HTLCId = Integer.valueOf(requestdata.get("HTLCId"));
+        String status = requestdata.get("status");
+        String PartyName = requestdata.get("PartyName");
         if (cordaUUID.equals("")) {
             return APIResult.createEg("FAILED! Not logged in");
         }
@@ -67,7 +72,8 @@ public class HTLCStatusController {
     @PostMapping(path = "/currenthtlc")
     public APIResult currentHTLCStatusList(
             @CookieValue(defaultValue = "") String cordaUUID,
-            @RequestParam String PartyName) throws JsonProcessingException {
+            @RequestBody HashMap<String,String> requestdata) throws JsonProcessingException {
+        String PartyName = requestdata.get("PartyName");
         if (cordaUUID.equals("")) {
             return APIResult.createEg("FAILED! Not logged in");
         }
@@ -88,8 +94,9 @@ public class HTLCStatusController {
     @PostMapping(path = "/historyhtlc")
     public APIResult historyHTLCStatusList(
             @CookieValue(defaultValue = "") String cordaUUID,
-            @RequestParam String PartyName) throws JsonProcessingException {
+            @RequestBody HashMap<String,String> requestdata) throws JsonProcessingException {
         //
+        String PartyName = requestdata.get("PartyName");
         if (cordaUUID.equals("")) {
             return APIResult.createEg("FAILED! Not logged in");
         }
@@ -109,7 +116,8 @@ public class HTLCStatusController {
     @PostMapping(path = "/gethtlc")
     public APIResult getHTLCStatus(
             @CookieValue(defaultValue = "") String cordaUUID,
-            @RequestParam Integer HTLCId) throws JsonProcessingException {
+            @RequestBody HashMap<String,String> requestdata) throws JsonProcessingException {
+        Integer HTLCId = Integer.valueOf(requestdata.get("HTLCId"));
         if (cordaUUID.equals("")) {
             return APIResult.createEg("FAILED! Not logged in");
         }
@@ -132,7 +140,9 @@ public class HTLCStatusController {
     @PostMapping(path = "/getsecret")
     public APIResult getHTLCSecret(
             @CookieValue(defaultValue = "") String cordaUUID,
-            @RequestParam Integer HTLCId, @RequestParam String PartyName){
+            @RequestBody HashMap<String,String> requestdata) {
+        Integer HTLCId = Integer.valueOf(requestdata.get("HTLCId"));
+        String PartyName = requestdata.get("PartyName");
         if (cordaUUID.equals("")) {
             return APIResult.createEg("FAILED! Not logged in");
         }
