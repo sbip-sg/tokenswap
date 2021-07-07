@@ -42,12 +42,13 @@ import net.corda.core.messaging.FlowHandle;
  */
 
 @RestController
+@CrossOrigin
 @RequestMapping("/corda") // The paths for HTTP requests are relative to this base path.
 public class CordaController {
 /*    private final CordaRPCOps proxy;
     private final static Logger logger = LoggerFactory.getLogger(ControllerX.class); */
 
-    private ConcurrentHashMap<UUID, CordaRPCOps> loginMap;
+    public static ConcurrentHashMap<UUID, CordaRPCOps> loginMap;
     @Autowired
     private HTLCStatusRepository htlcStatusRepository;
     @Autowired
@@ -75,9 +76,10 @@ public class CordaController {
     public APIResult login(
         HttpServletResponse httpResponse,
         @CookieValue(defaultValue = "") String cordaUUID,
-        @RequestParam("address") String address,
-        @RequestParam("username") String user,
-        @RequestParam("password") String password) {
+          @RequestBody HashMap<String,String> requestdata){
+      String address = requestdata.get("address");
+      String user = requestdata.get("username");
+      String password = requestdata.get("password");
 
       //Already logged
       if (!cordaUUID.equals("")) {
@@ -135,19 +137,19 @@ public class CordaController {
     @PostMapping(value = "/initswap")
     public APIResult htlcFundResponse(
         @CookieValue(defaultValue = "") String cordaUUID,
-        @RequestParam("SendParty") String SendParty,
-        @RequestParam("ReceiveParty") String ReceiveParty,
-        @RequestParam("SendPartyAddress") String SendPartyAddress,
-        @RequestParam("ReceivePartyAddress") String ReceivePartyAddress,
-        @RequestParam("SendType") String SendType,
-        @RequestParam("ReceiveType") String ReceiveType,
-        @RequestParam("SendValue") int SendValue,
-        @RequestParam("ReceiveValue") String ReceiveValue,
-        @RequestParam("Secret") String Secret,
-        @RequestParam("Timeoutnum") int Timeoutnum) {
+        @RequestBody HashMap<String,String> requestdata){
       HashMap<String, String> response = new HashMap<String, String> ();
-      //to-do
-      //fixed Escrow party
+
+      String SendParty = requestdata.get("SendParty");
+      String ReceiveParty = requestdata.get("ReceiveParty");
+      String SendPartyAddress = requestdata.get("SendPartyAddress");
+      String ReceivePartyAddress = requestdata.get("ReceivePartyAddress");
+      String SendType = requestdata.get("SendType");
+      String ReceiveType = requestdata.get("ReceiveType");
+      int SendValue =  Integer.valueOf(requestdata.get("SendValue"));
+      String ReceiveValue = requestdata.get("ReceiveValue");
+      String Secret = requestdata.get("Secret");
+      int Timeoutnum = Integer.valueOf(requestdata.get("Timeoutnum"));
 
 
       if (cordaUUID.equals("")) {
@@ -238,9 +240,10 @@ public class CordaController {
     @PostMapping(value = "/htlc_withdraw")
     private APIResult htlcWithdrawResponse(
         @CookieValue(defaultValue = "") String cordaUUID,
-        @RequestParam("HTLCId") Integer HTLCId,
-        @RequestParam("Secret") String Secret) {
-
+        @RequestBody HashMap<String,String> requestdata){
+      
+      Integer HTLCId = Integer.valueOf(requestdata.get("HTLCId"));
+      String Secret = requestdata.get("Secret");
       if (cordaUUID.equals("")) {
         return APIResult.createEg("FAILED! Not logged in");
       }
@@ -290,9 +293,10 @@ public class CordaController {
     @PostMapping(value = "/htlc_refund")
     private APIResult htlcRefundResponse(
         @CookieValue(defaultValue = "") String cordaUUID,
-        @RequestParam("HTLCId") Integer HTLCId) {
+        @RequestBody HashMap<String,String> requestdata){
       HashMap<String, String> response = new HashMap<String, String> ();
-
+      
+      Integer HTLCId = Integer.valueOf(requestdata.get("HTLCId"));
       if (cordaUUID.equals("")) {
         return APIResult.createEg("FAILED! Not logged in");
       }
@@ -338,11 +342,12 @@ public class CordaController {
       }
     }
 
-    @GetMapping(value = "/balance")
+    @PostMapping(value = "/balance")
     private APIResult balance(
         @CookieValue(defaultValue = "") String cordaUUID,
-        @RequestParam(defaultValue = "") String symbol) {
-
+        @RequestBody HashMap<String,String> requestdata){
+        // @RequestParam(defaultValue = "") String symbol) {
+      String symbol = requestdata.get("symbol");
 
       if (cordaUUID.equals("")) {
         return APIResult.createEg("FAILED! Not logged in");
