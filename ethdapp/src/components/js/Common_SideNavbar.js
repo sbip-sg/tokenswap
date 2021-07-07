@@ -29,11 +29,11 @@ export const Common_SideNavbar = () => {
         } else {
             const accountAddress = await ConnectMetamaskWallet();
             if(accountAddress != null) {
-                web3.eth.getBalance(accountAddress, function (err, accountBalance) {
+                web3.eth.getBalance(accountAddress, function (err, accountWeiBalance) {
                     if (err === null && accountAddress) {
                         history.push({
                             pathname: "/dashboard/initiate-swap",
-                            state: { detail: accountAddress+"|"+accountBalance }
+                            state: { detail: accountAddress+"|"+web3.utils.fromWei(accountWeiBalance, "ether") }
                         });
                     }
                 });
