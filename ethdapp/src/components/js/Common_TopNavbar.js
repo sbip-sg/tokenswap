@@ -49,9 +49,9 @@ export const Common_TopNavbar = () => {
             setMessage(messages => [...messages, { head: "MetaMask Wallet Not Found", body: `Please install MetaMask!`, variant: 'warning' }]);
         } else {
             const accountAddress = await ConnectMetamaskWallet();
-            web3.eth.getBalance(accountAddress, function (err, accountBalance) {
+            web3.eth.getBalance(accountAddress, function (err, accountWeiBalance) {
                 if (err === null && accountAddress) {
-                    setMessage(messages => [...messages, { head: "MetaMask Account Informaton", body: `Ether Balance: ${accountBalance} Ether Address: ${accountAddress}`, variant: 'success' }]);
+                    setMessage(messages => [...messages, { head: "MetaMask Account Informaton", body: `Ether Balance: ${web3.utils.fromWei(accountWeiBalance, "ether")} ether || Ether Address: ${accountAddress}`, variant: 'success' }]);
                 }
             });
         }
