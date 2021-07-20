@@ -206,13 +206,14 @@ public class CordaController {
       htlcStatus.setHtlcstatus("init");
       htlcStatus = htlcStatusRepository.save(htlcStatus);
       Integer htlc_id = htlcStatus.getHtlcid();
+      
       HTLCSecret htlcSecret = new HTLCSecret();
       htlcSecret.setHtlchash(HTLCHash);
       htlcSecret.setHtlcid(htlc_id);
       htlcSecret.setSecret(Secret);
       htlcSecret.setInitparty(SendParty);
       //detect flow runing status
-      //banlance> sendvalue
+      //balance> sendvalue
       FlowHandle handle = proxy.startFlowDynamic(
               GetTokenBalance.class, SendType);
 
