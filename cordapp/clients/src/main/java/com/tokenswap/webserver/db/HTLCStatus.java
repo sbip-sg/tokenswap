@@ -38,131 +38,39 @@ public class HTLCStatus {
     //receivefund, receivedwithdraw, receiverefund, finished
     private String receivestatus;
 
-    public String getReceiveparty() {
-        return receiveparty;
-    }
+    /* GETTER METHODS */
+    public String getSendparty() { return sendparty; }
+    public String getSendpartyaddress() { return sendpartyaddress; }
+    public String getSendvalue() { return sendvalue; }
+    public String getSendtype() { return sendtype; }
+    public String getSendtimeout() { return sendtimeout; }
+    public String getSendstatus() { return sendstatus; }
+    public String getReceiveparty() { return receiveparty; }
+    public String getReceivepartyaddress() { return receivepartyaddress; }
+    public String getReceivevalue() { return receivevalue; }
+    public String getReceivetype() { return receivetype; }
+    public String getReceivetimout() { return receivetimout; }
+    public String getReceivestatus() { return receivestatus; }
+    public String getEthsmartcontractaddress() { return ethsmartcontractaddress; }
+    public Integer getHtlcid() { return htlcid; }
+    public String getHtlchash() { return htlchash; }
+    public String getHtlcstatus() { return htlcstatus; }
 
-    public void setReceiveparty(String receiveparty) {
-        this.receiveparty = receiveparty;
-    }
-
-    public String getSendpartyaddress() {
-        return sendpartyaddress;
-    }
-
-    public void setSendpartyaddress(String sendpartyaddress) {
-        this.sendpartyaddress = sendpartyaddress;
-    }
-
-    public String getReceivepartyaddress() {
-        return receivepartyaddress;
-    }
-
-    public void setReceivepartyaddress(String receivepartyaddress) {
-        this.receivepartyaddress = receivepartyaddress;
-    }
-
-    public String getSendtype() {
-        return sendtype;
-    }
-
-    public void setSendtype(String sendtype) {
-        this.sendtype = sendtype;
-    }
-
-    public String getSendvalue() {
-        return sendvalue;
-    }
-
-    public void setSendvalue(String sendvalue) {
-        this.sendvalue = sendvalue;
-    }
-
-    public String getReceivetype() {
-        return receivetype;
-    }
-
-    public void setReceivetype(String receivetype) {
-        this.receivetype = receivetype;
-    }
-
-    public String getReceivevalue() {
-        return receivevalue;
-    }
-
-    public void setReceivevalue(String receivevalue) {
-        this.receivevalue = receivevalue;
-    }
-
-    public String getSendtimeout() {
-        return sendtimeout;
-    }
-
-    public void setSendtimeout(String sendtimeout) {
-        this.sendtimeout = sendtimeout;
-    }
-
-    public String getReceivetimout() {
-        return receivetimout;
-    }
-
-    public void setReceivetimout(String receivetimout) {
-        this.receivetimout = receivetimout;
-    }
-
-    public String getEthsmartcontractaddress() {
-        return ethsmartcontractaddress;
-    }
-
-    public void setEthsmartcontractaddress(String ethsmartcontractaddress) {
-        this.ethsmartcontractaddress = ethsmartcontractaddress;
-    }
-
-    public String getHtlcstatus() {
-        return htlcstatus;
-    }
-
-    public void setHtlcstatus(String htlcstatus) {
-        this.htlcstatus = htlcstatus;
-    }
-
-    public String getSendstatus() {
-        return sendstatus;
-    }
-
-    public void setSendstatus(String sendstatus) {
-        this.sendstatus = sendstatus;
-    }
-
-    public String getReceivestatus() {
-        return receivestatus;
-    }
-
-    public void setReceivestatus(String receivestatus) {
-        this.receivestatus = receivestatus;
-    }
-
-    public Integer getHtlcid() {
-        return htlcid;
-    }
-
-    public void setHtlcid(Integer htlcid) {
-        this.htlcid = htlcid;
-    }
-
-    public String getSendparty() {
-        return sendparty;
-    }
-
-    public void setSendparty(String sendparty) {
-        this.sendparty = sendparty;
-    }
-
-    public String getHtlchash() {
-        return htlchash;
-    }
-
-    public void setHtlchash(String htlchash) {
-        this.htlchash = htlchash;
-    }
+    /* SETTER METHODS */
+    public void setSendparty(String sendparty) { this.sendparty = sendparty; }
+    public void setSendpartyaddress(String sendpartyaddress) { this.sendpartyaddress = sendpartyaddress; }
+    public void setSendvalue(String sendvalue) { this.sendvalue = sendvalue; }
+    public void setSendtype(String sendtype) { this.sendtype = sendtype; }
+    public void setSendtimeout(String sendtimeout) { this.sendtimeout = sendtimeout; }
+    public void setSendstatus(String sendstatus) { this.sendstatus = sendstatus; }
+    public void setReceiveparty(String receiveparty) { this.receiveparty = receiveparty; }
+    public void setReceivepartyaddress(String receivepartyaddress) { this.receivepartyaddress = receivepartyaddress; }
+    public void setReceivetype(String receivetype) { this.receivetype = receivetype; }
+    public void setReceivevalue(String receivevalue) { this.receivevalue = receivevalue; }
+    public void setReceivetimout(String receivetimout) { this.receivetimout = receivetimout; }
+    public void setReceivestatus(String receivestatus) { this.receivestatus = receivestatus; }
+    public void setEthsmartcontractaddress(String ethsmartcontractaddress) { this.ethsmartcontractaddress = ethsmartcontractaddress; }
+    public void setHtlcid(Integer htlcid) { this.htlcid = htlcid; }
+    public void setHtlchash(String htlchash) { this.htlchash = htlchash; }
+    public void setHtlcstatus(String htlcstatus) { this.htlcstatus = htlcstatus; }
 }

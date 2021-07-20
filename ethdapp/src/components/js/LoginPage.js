@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Container, Col, Row } from "react-bootstrap";
 
 import auth from "../support/Auth.js";
@@ -11,13 +11,13 @@ import "../css/LoginPage.css";
 import exchangePic from "../../images/login_exchangePic.svg";
 import userIcon from "../../images/login_userIcon.svg";
 
+export const LoginPage = (props) => {
+    // axios.defaults.withCredentials = true;
 
-export const LoginPage = props => {
-    const formRef = React.useRef(null);
-    const initialFValues = {
+    const [initialFValues, setState] = useState({
         username: '',
         password: ''
-    };
+    });
 
     const validateFields = (fieldValues = values) => {
         let temp = { ...errors };
@@ -33,7 +33,7 @@ export const LoginPage = props => {
         }
     };
 
-    const { values, errors, setErrors, handleInputChange } = FormStyle(initialFValues, true, validateFields);
+    const { values, errors, setErrors, handleInputChange } = FormStyle(initialFValues, true, validateFields, setState);
     const handleSubmit = e => {
         if (validateFields()) {
             axios({
@@ -42,12 +42,19 @@ export const LoginPage = props => {
                 data: { address: 'localhost:10009', username: values.username, password: values.password },
                 headers: { 'Content-Type': 'application/json; charset=utf-8' }
             }).then((res) => {
-                if(res.data.code == 200) {
+                if(res.data.code === 200) {
                     console.log("LOGIN SUCCESSFUL: " + res.status);
+                    setState(prevState => ({
+                        ...prevState
+                    }));
+                    localStorage.setItem("LOGIN_ACCESS_TOKEN", res.data.token);
                     auth.login(() => {
-                        props.history.push("/dashboard");
+                        props.history.push({
+                            pathname: "/dashboard",
+                            state: { detail: ((JSON.stringify(res.data.data)).split("L")[0]).substring(3, ((JSON.stringify(res.data.data)).split("L")[0]).length-2) }
+                        });
                     });
-                } else if(res.data.code == 500) {
+                } else if(res.data.code === 500) {
                     console.log("LOGIN FAILED: " + res.status);
                     window.alert("Invalid credentials entered. Please try again.");
                 }
