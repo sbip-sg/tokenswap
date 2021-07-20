@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
+import auth from "../support/Auth.js";
+import axios from "axios";
+
 import { Common_CardUI } from "./Common_CardUI.js";
 
-export const HomePage_DashboardComp = () => {
+export const HomePage_DashboardComp = (props) => {
+    let location = useLocation();
     const swapTransactionList = [
         {
             namePartyA: 'Alice',
@@ -68,11 +74,32 @@ export const HomePage_DashboardComp = () => {
         }
     ];
 
+    useEffect(() => {
+        /* ========================== DEBUGGING IN PROCESS ============================ */
+        /*
+        axios.get('http://172.26.186.111:10050/corda/login', {
+            headers: { 'token': localStorage.getItem("LOGIN_ACCESS_TOKEN") }
+        }).then(function (res) {
+            window.alert("RES STATUS: " + res.status);
+            if (res.status !== 200) {
+                auth.logout(() => {
+                    props.history.push("/");
+                });
+            }
+        }).catch(function (err) {
+            window.alert("ERROR: " + err);
+            auth.logout(() => {
+                props.history.push("/");
+            });
+        });
+        */
+    });
+
     return (
         <div className="bg-gradient-to-r from-gray-100 to-gray-50 h-full">
             <div className="mt-4 px-8 py-1">
                 <p className="font-bold text-sm text-purple-700">
-                    Welcome, [Party Name]!
+                    Welcome, Alice!
                 </p>
             </div>
             <div className="flex pl-4 pr-4 mt-2 space-x-3">
@@ -105,15 +132,15 @@ export const HomePage_DashboardComp = () => {
                                             {swapTransactionList.map((swapTransaction) => (
                                                 <tr key={swapTransaction.addressPartyA} className="cursor-pointer">
                                                     <td className="px-4 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">
-                                                        {swapTransaction.namePartyA}<br/>
-                                                        ({(swapTransaction.addressPartyA).substr(0, 4)}....{(swapTransaction.addressPartyA).substr((swapTransaction.addressPartyA).length-4, (swapTransaction.addressPartyA).length)})
+                                                        {swapTransaction.namePartyA}<br />
+                                                        ({(swapTransaction.addressPartyA).substr(0, 4)}....{(swapTransaction.addressPartyA).substr((swapTransaction.addressPartyA).length - 4, (swapTransaction.addressPartyA).length)})
                                                     </td>
                                                     <td className="px-4 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">
-                                                        {swapTransaction.namePartyB}<br/>
-                                                        ({(swapTransaction.addressPartyB).substr(0, 4)}....{(swapTransaction.addressPartyB).substr((swapTransaction.addressPartyB).length-4, (swapTransaction.addressPartyB).length)})
+                                                        {swapTransaction.namePartyB}<br />
+                                                        ({(swapTransaction.addressPartyB).substr(0, 4)}....{(swapTransaction.addressPartyB).substr((swapTransaction.addressPartyB).length - 4, (swapTransaction.addressPartyB).length)})
                                                     </td>
                                                     <td className="px-4 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">
-                                                        {(swapTransaction.swapRate).split(" ~ ")[0]} ~ <br/>{(swapTransaction.swapRate).split(" ~ ")[1]}
+                                                        {(swapTransaction.swapRate).split(" ~ ")[0]} ~ <br />{(swapTransaction.swapRate).split(" ~ ")[1]}
                                                     </td>
                                                     <td className="px-4 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">{swapTransaction.swapStatus}</td>
                                                     <td className="px-4 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">{swapTransaction.lastTransactionDate}</td>
