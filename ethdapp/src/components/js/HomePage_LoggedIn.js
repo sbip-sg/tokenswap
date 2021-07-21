@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useLocation } from "react-router-dom";
 import { Switch } from "react-router-dom";
 
@@ -13,7 +13,6 @@ import { ProtectedRoute } from "../support/ProtectedRoute.js";
 import "../css/HomePage_LoggedIn.css";
 
 export const HomePage_LoggedIn = props => {
-    let location = useLocation();
     return (
         <div>
             <div className="flex w-screen h-screen">

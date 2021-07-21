@@ -1,39 +1,61 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
+import ReactPaginate from "react-paginate";
 
 import axios from "axios";
 
-const pendingSwapsArr = [];
-const checkingArr = [];
-
-export class HomePage_PendingSwapsListComp extends Component {
+export class HomePage_PendingSwapsListComp extends PureComponent {
     constructor(props) {
         super(props);
 
+        this.state = {
+            offset: 0,
+            tableData: [],
+            orgtableData: [],
+            perPage: 10,
+            currentPage: 0
+        }
+        this.handlePageClick = this.handlePageClick.bind(this);
+    }
+
+    handlePageClick = (e) => {
+        const selectedPage = e.selected;
+        const offset = selectedPage * this.state.perPage;
+
+        this.setState({
+            currentPage: selectedPage,
+            offset: offset
+        }, () => {
+            this.loadMoreData()
+        });
+    };
+
+    loadMoreData() {
+        const data = this.state.orgtableData;
+        const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage);
+        this.setState({
+            pageCount: Math.ceil(data.length / this.state.perPage),
+            tableData: slice
+        });
+    }
+
+    /* componentDidMount() is invoked immediately after a component is mounted */
+    componentDidMount() {
+        this.getData();
+    }
+
+    getData() {
         axios({
             method: 'POST',
             url: 'http://172.26.186.111:10050/htlc/currenthtlc',
             data: { PartyName: localStorage.getItem("PARTY_NAME") },
             headers: { 'Content-Type': 'application/json; charset=utf-8' }
         }).then(res => {
-            // window.alert("TESTING: " + JSON.stringify(JSON.parse(res.data['data'])));
-            JSON.parse(res.data['data']).forEach(pendingSwap => {
-                if(!checkingArr.includes(pendingSwap.htlcid)) {
-                    checkingArr.push(pendingSwap.htlcid);
-                    pendingSwapsArr.push({
-                        htlcid: pendingSwap.htlcid, 
-                        sendparty: pendingSwap.sendparty, 
-                        sendpartyaddress: pendingSwap.sendpartyaddress, 
-                        receiveparty: pendingSwap.receiveparty, 
-                        receivepartyaddress: pendingSwap.receivepartyaddress, 
-                        sendvalue: pendingSwap.sendvalue, 
-                        sendtype: pendingSwap.sendtype, 
-                        receivevalue: pendingSwap.receivevalue, 
-                        receivetype: pendingSwap.receivetype, 
-                        htlcstatus: pendingSwap.htlcstatus, 
-                        sendtimeout: pendingSwap.sendtimeout, 
-                        htlchash: pendingSwap.htlchash
-                    });
-                }
+            var resultData = JSON.parse(res.data['data']);
+            var sliceResultData = resultData.slice(this.state.offset, this.state.offset + this.state.perPage);
+            this.setState({
+                pageCount: Math.ceil(resultData.length / this.state.perPage),
+                orgtableData: res.data['data'],
+                tableData: sliceResultData
             });
         });
     }
@@ -42,7 +64,7 @@ export class HomePage_PendingSwapsListComp extends Component {
         const { history } = this.props;
 
         return (
-            <div className="bg-purple-200 mx-auto max-w-6xl py-3 px-3 lg:px-4 shadow-xl mb-12">
+            <div className="bg-purple-200 mx-auto max-w-6xl py-3 px-3 lg:px-4 shadow-xl">
                 <form>
                     <div className="bg-white shadow-lg rounded px-8 pb-4 mb-3 flex-col">
                         <div className="-mx-3 md:flex mb-6 border-b-2 border-purple-300 pt-3 pb-3">
@@ -69,31 +91,33 @@ export class HomePage_PendingSwapsListComp extends Component {
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-gray-300">
-                                                {pendingSwapsArr.length ? pendingSwapsArr.map(pendingSwapIndex => (
+                                                {(this.state.tableData.length) ? (this.state.tableData).map((pendingSwapIndex, i) => (
                                                     <tr key={pendingSwapIndex.addressPartyA} className="cursor-pointer" onClick={() => {
-                                                        if(pendingSwapIndex.sendtype === "house") {
+                                                        if (pendingSwapIndex.sendtype === "house") {
                                                             pendingSwapIndex.sendtype = "HouseToken";
-                                                        } else if(pendingSwapIndex.sendtype === "ETH") {
+                                                        } else if (pendingSwapIndex.sendtype === "ETH") {
                                                             pendingSwapIndex.sendtype = "Ether";
                                                         }
 
-                                                        if(pendingSwapIndex.receivetype === "house") {
+                                                        if (pendingSwapIndex.receivetype === "house") {
                                                             pendingSwapIndex.receivetype = "HouseToken";
-                                                        } else if(pendingSwapIndex.receivetype === "ETH") {
+                                                        } else if (pendingSwapIndex.receivetype === "ETH") {
                                                             pendingSwapIndex.receivetype = "Ether";
                                                         }
-                                                        
+
                                                         history.push({
                                                             pathname: "/dashboard/swap-details",
-                                                            state: { detail: pendingSwapIndex.htlcid + "|" + 
-                                                                        pendingSwapIndex.sendparty + "|" + 
-                                                                        pendingSwapIndex.sendpartyaddress + "|" + 
-                                                                        pendingSwapIndex.receiveparty + "|" + 
-                                                                        pendingSwapIndex.receivepartyaddress + "|" + 
-                                                                        pendingSwapIndex.sendvalue + " " + pendingSwapIndex.sendtype + " ~ " + pendingSwapIndex.receivevalue + " " + pendingSwapIndex.receivetype + "|" + 
-                                                                        pendingSwapIndex.htlcstatus + "|" + 
-                                                                        pendingSwapIndex.sendtimeout + "|" + 
-                                                                        pendingSwapIndex.htlchash }
+                                                            state: {
+                                                                detail: pendingSwapIndex.htlcid + "|" +
+                                                                    pendingSwapIndex.sendparty + "|" +
+                                                                    pendingSwapIndex.sendpartyaddress + "|" +
+                                                                    pendingSwapIndex.receiveparty + "|" +
+                                                                    pendingSwapIndex.receivepartyaddress + "|" +
+                                                                    pendingSwapIndex.sendvalue + " " + pendingSwapIndex.sendtype + " ~ " + pendingSwapIndex.receivevalue + " " + pendingSwapIndex.receivetype + "|" +
+                                                                    pendingSwapIndex.htlcstatus + "|" +
+                                                                    pendingSwapIndex.sendtimeout + "|" +
+                                                                    pendingSwapIndex.htlchash
+                                                            }
                                                         });
                                                     }}>
                                                         <td className="px-4 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">
@@ -101,11 +125,11 @@ export class HomePage_PendingSwapsListComp extends Component {
                                                         </td>
                                                         <td className="px-4 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">
                                                             {pendingSwapIndex.sendparty}<br />
-                                                            ({(pendingSwapIndex.sendpartyaddress).substr(0, 6)}....{(pendingSwapIndex.sendpartyaddress).substr((pendingSwapIndex.sendpartyaddress).length - 6, (pendingSwapIndex.sendpartyaddress).length)})
+                                                            ({(pendingSwapIndex.sendpartyaddress).substr(0, 6)}....{(pendingSwapIndex.sendpartyaddress).substr((pendingSwapIndex.sendpartyaddress).length-6, (pendingSwapIndex.sendpartyaddress).length)})
                                                         </td>
                                                         <td className="px-4 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">
                                                             {pendingSwapIndex.receiveparty}<br />
-                                                            ({(pendingSwapIndex.receivepartyaddress).substr(0, 6)}....{(pendingSwapIndex.receivepartyaddress).substr((pendingSwapIndex.receivepartyaddress).length - 6, (pendingSwapIndex.receivepartyaddress).length)})
+                                                            ({(pendingSwapIndex.receivepartyaddress).substr(0, 6)}....{(pendingSwapIndex.receivepartyaddress).substr((pendingSwapIndex.receivepartyaddress).length-6, (pendingSwapIndex.receivepartyaddress).length)})
                                                         </td>
                                                         <td className="px-5 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">
                                                             {pendingSwapIndex.sendvalue}&nbsp;{pendingSwapIndex.sendtype}&nbsp;~&nbsp;{pendingSwapIndex.receivevalue}&nbsp;{pendingSwapIndex.receivetype}
@@ -117,16 +141,35 @@ export class HomePage_PendingSwapsListComp extends Component {
                                                             [DATE]<span className="hidden">|{pendingSwapIndex.sendtimeout}|{pendingSwapIndex.htlchash}</span>
                                                         </td>
                                                     </tr>
-                                                )):
-                                                (
-                                                    <tr>
-                                                        <td className="px-4 py-4 bg-white text-gray-900 text-sm text-center whitespace-nowrap" colspan="6">No Records Found</td>
-                                                    </tr>
-                                                )
+                                                )) :
+                                                    (
+                                                        <tr>
+                                                            <td className="px-4 py-4 bg-white text-gray-900 text-sm text-center whitespace-nowrap" colspan="6">No Records Found</td>
+                                                        </tr>
+                                                    )
                                                 }
                                             </tbody>
                                         </table>
                                     </div>
+                                    <ReactPaginate
+                                        previousLabel={"prev"}
+                                        nextLabel={"next"}
+                                        breakLabel={"..."}
+                                        activeClassName={"active"}
+                                        breakClassName={"page-item"}
+                                        breakLinkClassName={"page-link"}
+                                        containerClassName={"pagination mt-3 justify-content-center"}
+                                        subContainerClassName={"pages pagination"}
+                                        pageClassName={"page-item"}
+                                        pageLinkClassName={"page-link"}
+                                        previousClassName={"page-item"}
+                                        previousLinkClassName={"page-link"}
+                                        nextClassName={"page-item"}
+                                        nextLinkClassName={"page-link"}
+                                        pageCount={this.state.pageCount}
+                                        marginPagesDisplayed={2}
+                                        pageRangeDisplayed={5}
+                                        onPageChange={this.handlePageClick} />
                                 </div>
                             </div>
                         </div>

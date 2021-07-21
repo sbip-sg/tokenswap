@@ -104,11 +104,11 @@ export class Homepage_InitiateSwapComp extends Component {
                     SendParty: localStorage.getItem("PARTY_NAME"),
                     SendPartyAddress: (location.state.detail).split("|")[0],
                     SendValue: SendValue.value,
-                    SendType: "house",
+                    SendType: SendType.value,
                     ReceiveParty: ReceiveParty.value,
                     ReceivePartyAddress: ReceivePartyAddress.value,
                     ReceiveValue: ReceiveValue.value,
-                    ReceiveType: "ETH",
+                    ReceiveType: ReceiveType.value,
                     Secret: Secret.value,
                     Timeoutnum: Timeoutnum.value
                 },
