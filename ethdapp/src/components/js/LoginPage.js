@@ -47,11 +47,12 @@ export const LoginPage = (props) => {
                     setState(prevState => ({
                         ...prevState
                     }));
+                    
                     localStorage.setItem("LOGIN_ACCESS_TOKEN", res.data.token);
+                    localStorage.setItem("PARTY_NAME", ((JSON.stringify(res.data['data'])).split("L")[0]).substring(13, ((JSON.stringify(res.data['data'])).split("L")[0]).length-2));
                     auth.login(() => {
                         props.history.push({
-                            pathname: "/dashboard",
-                            state: { detail: ((JSON.stringify(res.data.data)).split("L")[0]).substring(3, ((JSON.stringify(res.data.data)).split("L")[0]).length-2) }
+                            pathname: "/dashboard"
                         });
                     });
                 } else if(res.data.code === 500) {

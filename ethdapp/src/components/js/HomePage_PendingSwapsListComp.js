@@ -2,88 +2,40 @@ import React, { Component } from "react";
 
 import axios from "axios";
 
-const pendingSwapList = [
-    {
-        namePartyA: 'Alice',
-        addressPartyA: '0xfn2me1dk7udk4',
-        namePartyB: 'David Cook',
-        addressPartyB: '0xg5am21dn8uds1',
-        swapRate: '1 HouseToken ~ 2.2208 Ether',
-        swapStatus: 'Pending Swap',
-        lastTransactionDate: '18 June 2021'
-    },
-    {
-        namePartyA: 'Jenny White',
-        addressPartyA: '0xg2ns4odn1zms3',
-        namePartyB: 'Alice',
-        addressPartyB: '0xfn2me1dk7udk4',
-        swapRate: '1 Ether ~ 0.9960 HouseToken',
-        swapStatus: 'Pending Swap',
-        lastTransactionDate: '17 June 2021'
-    },
-    {
-        namePartyA: 'Lisa Edison',
-        addressPartyA: '0xa7ng9kd2ad2g9',
-        namePartyB: 'Alice',
-        addressPartyB: '0xfn2me1dk7udk4',
-        swapRate: '1 HouseToken ~ 3.111 Ether',
-        swapStatus: 'Pending Swap',
-        lastTransactionDate: '14 June 2021'
-    },
-    {
-        namePartyA: 'Alice',
-        addressPartyA: '0xfn2me1dk7udk4',
-        namePartyB: 'Jennifer Emma',
-        addressPartyB: '0xky9s4soz2u4dz',
-        swapRate: '1 HouseToken ~ 4.082 Ether',
-        swapStatus: 'Pending Swap',
-        lastTransactionDate: '14 June 2021'
-    },
-    {
-        namePartyA: 'Alice',
-        addressPartyA: '0xfn2me1dk7udk4',
-        namePartyB: 'Helen Aiden',
-        addressPartyB: '0xbs0fga2y3v6ds',
-        swapRate: '1 HouseToken ~ 4.082 Ether',
-        swapStatus: 'Pending Swap',
-        lastTransactionDate: '13 June 2021'
-    },
-    {
-        namePartyA: 'Maggie Blue',
-        addressPartyA: '0xuvx3s52st2sgn',
-        namePartyB: 'Alice',
-        addressPartyB: '0xfn2me1dk7udk4',
-        swapRate: '1 HouseToken ~ 3.111 Ether',
-        swapStatus: 'Pending Swap',
-        lastTransactionDate: '12 June 2021'
-    },
-    {
-        namePartyA: 'Alice',
-        addressPartyA: '0xz2fhaes62g2df',
-        namePartyB: 'Tony Blaine',
-        addressPartyB: '0xky9s4soz2u4dz',
-        swapRate: '1 HouseToken ~ 1.224 Ether',
-        swapStatus: 'Pending Swap',
-        lastTransactionDate: '09 June 2021'
-    }
-];
-
+const pendingSwapsArr = [];
+const checkingArr = [];
 
 export class HomePage_PendingSwapsListComp extends Component {
     constructor(props) {
         super(props);
-    }
 
-    state = {
-        pendingSwaps: []
-    }
-
-    /* componentDidMount() */
-    componentDidMount() {
-        axios.get('http://').then(res => {
-            const pendingSwaps = res.data;
-            this.setState({pendingSwaps});
-        })
+        axios({
+            method: 'POST',
+            url: 'http://172.26.186.111:10050/htlc/currenthtlc',
+            data: { PartyName: localStorage.getItem("PARTY_NAME") },
+            headers: { 'Content-Type': 'application/json; charset=utf-8' }
+        }).then(res => {
+            // window.alert("TESTING: " + JSON.stringify(JSON.parse(res.data['data'])));
+            JSON.parse(res.data['data']).forEach(pendingSwap => {
+                if(!checkingArr.includes(pendingSwap.htlcid)) {
+                    checkingArr.push(pendingSwap.htlcid);
+                    pendingSwapsArr.push({
+                        htlcid: pendingSwap.htlcid, 
+                        sendparty: pendingSwap.sendparty, 
+                        sendpartyaddress: pendingSwap.sendpartyaddress, 
+                        receiveparty: pendingSwap.receiveparty, 
+                        receivepartyaddress: pendingSwap.receivepartyaddress, 
+                        sendvalue: pendingSwap.sendvalue, 
+                        sendtype: pendingSwap.sendtype, 
+                        receivevalue: pendingSwap.receivevalue, 
+                        receivetype: pendingSwap.receivetype, 
+                        htlcstatus: pendingSwap.htlcstatus, 
+                        sendtimeout: pendingSwap.sendtimeout, 
+                        htlchash: pendingSwap.htlchash
+                    });
+                }
+            });
+        });
     }
 
     render() {
@@ -108,28 +60,70 @@ export class HomePage_PendingSwapsListComp extends Component {
                                         <table className="min-w-full">
                                             <thead className="divide-y divide-gray-300">
                                                 <tr>
-                                                    <th scope="col" className="sticky top-0 px-4 py-3 bg-purple-400 text-white text-left text-sm font-medium uppercase">Party A</th>
-                                                    <th scope="col" className="sticky top-0 px-4 py-3 bg-purple-400 text-white text-left text-sm font-medium uppercase">Party B</th>
+                                                    <th scope="col" className="sticky top-0 px-4 py-3 bg-purple-400 text-white text-left text-sm font-medium uppercase">Contract ID</th>
+                                                    <th scope="col" className="sticky top-0 px-4 py-3 bg-purple-400 text-white text-left text-sm font-medium uppercase">Initiating Party</th>
+                                                    <th scope="col" className="sticky top-0 px-4 py-3 bg-purple-400 text-white text-left text-sm font-medium uppercase">Receiving Party</th>
                                                     <th scope="col" className="sticky top-0 px-5 py-3 bg-purple-400 text-white text-left text-sm font-medium uppercase">Swap Rate</th>
                                                     <th scope="col" className="sticky top-0 px-5 py-3 bg-purple-400 text-white text-left text-sm font-medium uppercase">Swap Status</th>
                                                     <th scope="col" className="sticky top-0 px-4 py-3 bg-purple-400 text-white text-left text-sm font-medium uppercase">Last Transaction Date</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-gray-300">
-                                                {(this.state).pendingSwaps.map((pendingSwapIndex) => (
+                                                {pendingSwapsArr.length ? pendingSwapsArr.map(pendingSwapIndex => (
                                                     <tr key={pendingSwapIndex.addressPartyA} className="cursor-pointer" onClick={() => {
+                                                        if(pendingSwapIndex.sendtype === "house") {
+                                                            pendingSwapIndex.sendtype = "HouseToken";
+                                                        } else if(pendingSwapIndex.sendtype === "ETH") {
+                                                            pendingSwapIndex.sendtype = "Ether";
+                                                        }
+
+                                                        if(pendingSwapIndex.receivetype === "house") {
+                                                            pendingSwapIndex.receivetype = "HouseToken";
+                                                        } else if(pendingSwapIndex.receivetype === "ETH") {
+                                                            pendingSwapIndex.receivetype = "Ether";
+                                                        }
+                                                        
                                                         history.push({
                                                             pathname: "/dashboard/swap-details",
-                                                            state: { detail: pendingSwapIndex.namePartyA + "|" + pendingSwapIndex.addressPartyA + "|" + pendingSwapIndex.namePartyB + "|" + pendingSwapIndex.addressPartyB + "|" + pendingSwapIndex.swapRate + "|" + pendingSwapIndex.swapStatus + "|" + pendingSwapIndex.lastTransactionDate }
+                                                            state: { detail: pendingSwapIndex.htlcid + "|" + 
+                                                                        pendingSwapIndex.sendparty + "|" + 
+                                                                        pendingSwapIndex.sendpartyaddress + "|" + 
+                                                                        pendingSwapIndex.receiveparty + "|" + 
+                                                                        pendingSwapIndex.receivepartyaddress + "|" + 
+                                                                        pendingSwapIndex.sendvalue + " " + pendingSwapIndex.sendtype + " ~ " + pendingSwapIndex.receivevalue + " " + pendingSwapIndex.receivetype + "|" + 
+                                                                        pendingSwapIndex.htlcstatus + "|" + 
+                                                                        pendingSwapIndex.sendtimeout + "|" + 
+                                                                        pendingSwapIndex.htlchash }
                                                         });
                                                     }}>
-                                                        <td className="px-4 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">{pendingSwapIndex.namePartyA}<br />({pendingSwapIndex.addressPartyA})</td>
-                                                        <td className="px-4 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">{pendingSwapIndex.namePartyB}<br />({pendingSwapIndex.addressPartyB})</td>
-                                                        <td className="px-5 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">{pendingSwapIndex.swapRate}</td>
-                                                        <td className="px-5 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">{pendingSwapIndex.swapStatus}</td>
-                                                        <td className="px-4 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">{pendingSwapIndex.lastTransactionDate}</td>
+                                                        <td className="px-4 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">
+                                                            {pendingSwapIndex.htlcid}
+                                                        </td>
+                                                        <td className="px-4 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">
+                                                            {pendingSwapIndex.sendparty}<br />
+                                                            ({(pendingSwapIndex.sendpartyaddress).substr(0, 6)}....{(pendingSwapIndex.sendpartyaddress).substr((pendingSwapIndex.sendpartyaddress).length - 6, (pendingSwapIndex.sendpartyaddress).length)})
+                                                        </td>
+                                                        <td className="px-4 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">
+                                                            {pendingSwapIndex.receiveparty}<br />
+                                                            ({(pendingSwapIndex.receivepartyaddress).substr(0, 6)}....{(pendingSwapIndex.receivepartyaddress).substr((pendingSwapIndex.receivepartyaddress).length - 6, (pendingSwapIndex.receivepartyaddress).length)})
+                                                        </td>
+                                                        <td className="px-5 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">
+                                                            {pendingSwapIndex.sendvalue}&nbsp;{pendingSwapIndex.sendtype}&nbsp;~&nbsp;{pendingSwapIndex.receivevalue}&nbsp;{pendingSwapIndex.receivetype}
+                                                        </td>
+                                                        <td className="px-5 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">
+                                                            {pendingSwapIndex.htlcstatus}
+                                                        </td>
+                                                        <td className="px-4 py-4 bg-white text-gray-900 text-sm whitespace-nowrap">
+                                                            [DATE]<span className="hidden">|{pendingSwapIndex.sendtimeout}|{pendingSwapIndex.htlchash}</span>
+                                                        </td>
                                                     </tr>
-                                                ))}
+                                                )):
+                                                (
+                                                    <tr>
+                                                        <td className="px-4 py-4 bg-white text-gray-900 text-sm text-center whitespace-nowrap" colspan="6">No Records Found</td>
+                                                    </tr>
+                                                )
+                                                }
                                             </tbody>
                                         </table>
                                     </div>

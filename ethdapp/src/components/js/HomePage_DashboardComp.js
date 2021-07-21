@@ -99,7 +99,7 @@ export const HomePage_DashboardComp = (props) => {
         <div className="bg-gradient-to-r from-gray-100 to-gray-50 h-full">
             <div className="mt-4 px-8 py-1">
                 <p className="font-bold text-sm text-purple-700">
-                    Welcome, Alice!
+                    Welcome, {localStorage.getItem("PARTY_NAME")}!
                 </p>
             </div>
             <div className="flex pl-4 pr-4 mt-2 space-x-3">
