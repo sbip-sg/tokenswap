@@ -36,7 +36,7 @@ export const Common_SideNavbar = (props) => {
                     if (err === null && accountAddress) {
                         history.push({
                             pathname: "/dashboard/initiate-swap",
-                            state: { detail: "Alice" + "|" + accountAddress + "|" + web3.utils.fromWei(accountWeiBalance, "ether") }
+                            state: { detail: accountAddress + "|" + web3.utils.fromWei(accountWeiBalance, "ether") }
                         });
                     }
                 });

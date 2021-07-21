@@ -96,14 +96,13 @@ export class Homepage_InitiateSwapComp extends Component {
 
         if ([sendValueError, receivePartyError, receivePartyAddressError, receiveValueError, secretError, timeoutnumError].every(e => e === false)) {
             this.setState({ ...initialState, allFieldsValidated: true });
-
-            //window.alert("TEST: " + SendValue.value + "|" + Timeoutnum.value);
+          
             axios({
                 method: 'POST',
                 url: 'http://172.26.186.111:10050/corda/initswap',
                 data: {
-                    SendParty: (location.state.detail).split("|")[0],
-                    SendPartyAddress: (location.state.detail).split("|")[1],
+                    SendParty: localStorage.getItem("PARTY_NAME"),
+                    SendPartyAddress: (location.state.detail).split("|")[0],
                     SendValue: SendValue.value,
                     SendType: "house",
                     ReceiveParty: ReceiveParty.value,
@@ -144,7 +143,7 @@ export class Homepage_InitiateSwapComp extends Component {
                             <div className="md:w-11/11 md:mb-0">
                                 <p className="font-semibold text-2xl text-purple-800">Initiate Swap</p>
                                 <p className="uppercase pt-2 text-xs text-indigo-500 font-bold">
-                                    [ Account Balance: {(location.state.detail).split("|")[2]} Ether ]
+                                    [ Account Balance: {(location.state.detail).split("|")[1]} Ether ]
                                 </p>
                             </div>
                         </div>
