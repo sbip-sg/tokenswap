@@ -8,7 +8,7 @@ import classnames from "classnames";
 
 import SwapHorizontalCircleTwoToneIcon from "@material-ui/icons/SwapHorizontalCircleTwoTone";
 import PostAddTwoToneIcon from "@material-ui/icons/PostAddTwoTone";
-
+axios.defaults.withCredentials = true;
 const initialState = {
     SendParty: { value: '', validateOnChange: false, error: '' },
     SendPartyAddress: { value: '', validateOnChange: false, error: '' },
@@ -85,7 +85,6 @@ export class Homepage_InitiateSwapComp extends Component {
     initiateSmartContract(e) {
         e.preventDefault();
         // const senderInfo = this.retrieveSelfAddress();
-
         const { location } = this.props;
         const { SendValue, SendType, ReceiveParty, ReceivePartyAddress, ReceiveValue, ReceiveType, Secret, Timeoutnum } = this.state;
         const sendValueError = fieldValidation.validateTransValue(SendValue.value);
@@ -98,19 +97,24 @@ export class Homepage_InitiateSwapComp extends Component {
         if ([sendValueError, receivePartyError, receivePartyAddressError, receiveValueError, secretError, timeoutnumError].every(e => e === false)) {
             this.setState({ ...initialState, allFieldsValidated: true });
 
-            window.alert("TEST: " + SendValue.value + "|" + Timeoutnum.value);
-            axios.post('http://172.26.186.111:10050/corda/initswap', {
-                SendParty: (location.state.detail).split("|")[0],
-                SendPartyAddress: (location.state.detail).split("|")[1],
-                SendValue: SendValue.value,
-                SendType: SendType.value,
-                ReceiveParty: ReceiveParty.value,
-                ReceivePartyAddress: ReceivePartyAddress.value,
-                ReceiveValue: ReceiveValue.value,
-                ReceiveType: ReceiveType.value,
-                Secret: Secret.value,
-                Timeoutnum: Timeoutnum.value
-            }, {withCredentials:true}).then((res) => {
+            //window.alert("TEST: " + SendValue.value + "|" + Timeoutnum.value);
+            axios({
+                method: 'POST',
+                url: 'http://172.26.186.111:10050/corda/initswap',
+                data: {
+                    SendParty: (location.state.detail).split("|")[0],
+                    SendPartyAddress: (location.state.detail).split("|")[1],
+                    SendValue: SendValue.value,
+                    SendType: "house",
+                    ReceiveParty: ReceiveParty.value,
+                    ReceivePartyAddress: ReceivePartyAddress.value,
+                    ReceiveValue: ReceiveValue.value,
+                    ReceiveType: "ETH",
+                    Secret: Secret.value,
+                    Timeoutnum: Timeoutnum.value
+                },
+                headers: { 'Content-Type': 'application/json; charset=utf-8','cordaUUID':localStorage.getItem("LOGIN_ACCESS_TOKEN")}
+            }).then((res) => {
                 console.log("SUCCESSFULLY INITIATED SMART CONTRACT: " + res.status);
             }).catch((err) => {
                 console.log("ERROR INITIATING SMART CONTRACT: " + err);

@@ -11,8 +11,9 @@ import "../css/LoginPage.css";
 import exchangePic from "../../images/login_exchangePic.svg";
 import userIcon from "../../images/login_userIcon.svg";
 
+axios.defaults.withCredentials = true;
 export const LoginPage = (props) => {
-    // axios.defaults.withCredentials = true;
+    //axios.defaults.withCredentials = true;
 
     const [initialFValues, setState] = useState({
         username: '',
@@ -40,14 +41,15 @@ export const LoginPage = (props) => {
                 method: 'POST',
                 url: 'http://172.26.186.111:10050/corda/login',
                 data: { address: 'localhost:10009', username: values.username, password: values.password },
-                headers: { 'Content-Type': 'application/json; charset=utf-8' }
+                headers: { 'Content-Type': 'application/json; charset=utf-8'}
             }).then((res) => {
                 if(res.data.code === 200) {
                     console.log("LOGIN SUCCESSFUL: " + res.status);
                     setState(prevState => ({
                         ...prevState
                     }));
-                    localStorage.setItem("LOGIN_ACCESS_TOKEN", res.data.token);
+                    localStorage.setItem("LOGIN_ACCESS_TOKEN", res.data.data.cordaUUID);
+                    console.log(res.data.data.cordaUUID);
                     auth.login(() => {
                         props.history.push({
                             pathname: "/dashboard",
