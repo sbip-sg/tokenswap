@@ -14,12 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 
 @RestController
-@CrossOrigin
-@RequestMapping(path = "/htlc")
+//@CrossOrigin(origins="http://localhost:3000",allowCredentials="true")
+@RequestMapping("/htlc")
 public class HTLCStatusController {
 
     @Autowired
@@ -30,23 +31,24 @@ public class HTLCStatusController {
     //update status
     @PostMapping(path = "/updatehtlc")
     public APIResult updateHTLCStatus(
-            @CookieValue(defaultValue = "") String cordaUUID,
+            HttpServletRequest request,
             @RequestBody HashMap<String,String> requestdata){
             // @RequestParam Integer HTLCId,
             // @RequestParam String status,
             // @RequestParam String PartyName){
-        Integer HTLCId = Integer.valueOf(requestdata.get("HTLCId"));
+        String cordaUUID = request.getHeader("cordaUUID");
+        Integer HTLCId = Integer.parseInt(requestdata.get("HTLCId"));
         String status = requestdata.get("status");
         String PartyName = requestdata.get("PartyName");
-        if (cordaUUID.equals("")) {
-            return APIResult.createEg("FAILED! Not logged in");
-        }
-        UUID uuid = UUID.fromString(cordaUUID);
-
-        final CordaRPCOps proxy = CordaController.loginMap.get(uuid);
-        if (proxy==null) {
-            return APIResult.createEg("FAILED! Not logged in");
-        }
+//         if (cordaUUID.equals("")) {
+//             return APIResult.createEg("FAILED! Not logged in");
+//         }
+//         UUID uuid = UUID.fromString(cordaUUID);
+//
+//         final CordaRPCOps proxy = CordaController.loginMap.get(uuid);
+//         if (proxy==null) {
+//             return APIResult.createEg("FAILED! Not logged in");
+//         }
         Optional<HTLCStatus> result = htlcStatusRepository.findById(HTLCId);
         HTLCStatus htlcStatus = result.orElse(null);
         if(htlcStatus == null){
@@ -71,18 +73,19 @@ public class HTLCStatusController {
     //gethtlc_list
     @PostMapping(path = "/currenthtlc")
     public APIResult currentHTLCStatusList(
-            @CookieValue(defaultValue = "") String cordaUUID,
+            HttpServletRequest request,
             @RequestBody HashMap<String,String> requestdata) throws JsonProcessingException {
         String PartyName = requestdata.get("PartyName");
-        if (cordaUUID.equals("")) {
-            return APIResult.createEg("FAILED! Not logged in");
-        }
-        UUID uuid = UUID.fromString(cordaUUID);
-
-        final CordaRPCOps proxy = CordaController.loginMap.get(uuid);
-        if (proxy==null) {
-            return APIResult.createEg("FAILED! Not logged in");
-        }
+        String cordaUUID = request.getHeader("cordaUUID");
+//         if (cordaUUID.equals("")) {
+//             return APIResult.createEg("FAILED! Not logged in");
+//         }
+//         UUID uuid = UUID.fromString(cordaUUID);
+//
+//         final CordaRPCOps proxy = CordaController.loginMap.get(uuid);
+//         if (proxy==null) {
+//             return APIResult.createEg("FAILED! Not logged in");
+//         }
         List<HTLCStatus> htlclist = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         htlclist.addAll(htlcStatusRepository.findBySendpartyAndHtlcstatus(PartyName,"process"));
@@ -93,19 +96,20 @@ public class HTLCStatusController {
     //gethtlc_list
     @PostMapping(path = "/historyhtlc")
     public APIResult historyHTLCStatusList(
-            @CookieValue(defaultValue = "") String cordaUUID,
+            HttpServletRequest request,
             @RequestBody HashMap<String,String> requestdata) throws JsonProcessingException {
         //
+        String cordaUUID = request.getHeader("cordaUUID");
         String PartyName = requestdata.get("PartyName");
-        if (cordaUUID.equals("")) {
-            return APIResult.createEg("FAILED! Not logged in");
-        }
-        UUID uuid = UUID.fromString(cordaUUID);
-
-        final CordaRPCOps proxy = CordaController.loginMap.get(uuid);
-        if (proxy==null) {
-            return APIResult.createEg("FAILED! Not logged in");
-        }
+//         if (cordaUUID.equals("")) {
+//             return APIResult.createEg("FAILED! Not logged in");
+//         }
+//         UUID uuid = UUID.fromString(cordaUUID);
+//
+//         final CordaRPCOps proxy = CordaController.loginMap.get(uuid);
+//         if (proxy==null) {
+//             return APIResult.createEg("FAILED! Not logged in");
+//         }
         List<HTLCStatus> htlclist = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         htlclist.addAll(htlcStatusRepository.findBySendpartyAndHtlcstatus(PartyName,"finished"));
@@ -115,18 +119,19 @@ public class HTLCStatusController {
     //getone_htlc
     @PostMapping(path = "/gethtlc")
     public APIResult getHTLCStatus(
-            @CookieValue(defaultValue = "") String cordaUUID,
+            HttpServletRequest request,
             @RequestBody HashMap<String,String> requestdata) throws JsonProcessingException {
-        Integer HTLCId = Integer.valueOf(requestdata.get("HTLCId"));
-        if (cordaUUID.equals("")) {
-            return APIResult.createEg("FAILED! Not logged in");
-        }
-        UUID uuid = UUID.fromString(cordaUUID);
+        Integer HTLCId = Integer.parseInt(requestdata.get("HTLCId"));
+        String cordaUUID = request.getHeader("cordaUUID");
+        // if (cordaUUID.equals("")) {
+        //     return APIResult.createEg("FAILED! Not logged in");
+        // }
+        // UUID uuid = UUID.fromString(cordaUUID);
 
-        final CordaRPCOps proxy = CordaController.loginMap.get(uuid);
-        if (proxy==null) {
-            return APIResult.createEg("FAILED! Not logged in");
-        }
+        // final CordaRPCOps proxy = CordaController.loginMap.get(uuid);
+        // if (proxy==null) {
+        //     return APIResult.createEg("FAILED! Not logged in");
+        // }
         ObjectMapper mapper = new ObjectMapper();
         Optional<HTLCStatus> result = htlcStatusRepository.findById(HTLCId);
         HTLCStatus htlcStatus = result.orElse(null);
@@ -139,19 +144,20 @@ public class HTLCStatusController {
     }
     @PostMapping(path = "/getsecret")
     public APIResult getHTLCSecret(
-            @CookieValue(defaultValue = "") String cordaUUID,
+            HttpServletRequest request,
             @RequestBody HashMap<String,String> requestdata) {
-        Integer HTLCId = Integer.valueOf(requestdata.get("HTLCId"));
+        String cordaUUID = request.getHeader("cordaUUID");
+        Integer HTLCId = Integer.parseInt(requestdata.get("HTLCId"));
         String PartyName = requestdata.get("PartyName");
-        if (cordaUUID.equals("")) {
-            return APIResult.createEg("FAILED! Not logged in");
-        }
-        UUID uuid = UUID.fromString(cordaUUID);
+        // if (cordaUUID.equals("")) {
+        //     return APIResult.createEg("FAILED! Not logged in");
+        // }
+        // UUID uuid = UUID.fromString(cordaUUID);
 
-        final CordaRPCOps proxy = CordaController.loginMap.get(uuid);
-        if (proxy==null) {
-            return APIResult.createEg("FAILED! Not logged in");
-        }
+        // final CordaRPCOps proxy = CordaController.loginMap.get(uuid);
+        // if (proxy==null) {
+        //     return APIResult.createEg("FAILED! Not logged in");
+        // }
         HTLCSecret htlcSecret = htlcSecretRepository.findByInitpartyAndAndHtlcid(PartyName,HTLCId);
         if(htlcSecret!= null){
             return APIResult.createOk(htlcSecret.getSecret());
