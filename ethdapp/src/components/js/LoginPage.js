@@ -16,12 +16,16 @@ export const LoginPage = (props) => {
     //axios.defaults.withCredentials = true;
 
     const [initialFValues, setState] = useState({
+        cordaID: '',
         username: '',
         password: ''
     });
 
     const validateFields = (fieldValues = values) => {
         let temp = { ...errors };
+        if ("cordaID" in fieldValues) {
+            temp.cordaID = fieldValues.cordaID ? "" : "Corda ID cannot be empty.";
+        }
         if ("username" in fieldValues) {
             temp.username = fieldValues.username ? "" : "Username cannot be empty.";
         }
@@ -40,7 +44,7 @@ export const LoginPage = (props) => {
             axios({
                 method: 'POST',
                 url: 'http://172.26.186.111:10050/corda/login',
-                data: { address: 'localhost:10009', username: values.username, password: values.password },
+                data: { address: values.cordaID, username: values.username, password: values.password },
                 headers: { 'Content-Type': 'application/json; charset=utf-8'}
             }).then((res) => {
                 if(res.data.code === 200) {
@@ -75,6 +79,9 @@ export const LoginPage = (props) => {
                 <Col lg={4} md={6} sm={12} className="text-center mt-5 p-3">
                     <img className="img_userIcon" src={userIcon} alt="" />
                     <Form onSubmit={handleSubmit} className="mt-4">
+                        <Form.Group controlId="fg_cordaID">
+                            <FormControls.InputField name="cordaID" type="text" label="Corda ID" value={values.cordaID} onChange={handleInputChange} error={errors.cordaID} />
+                        </Form.Group>
                         <Form.Group controlId="fg_username">
                             <FormControls.InputField name="username" type="text" label="Username" value={values.username} onChange={handleInputChange} error={errors.username} />
                         </Form.Group>

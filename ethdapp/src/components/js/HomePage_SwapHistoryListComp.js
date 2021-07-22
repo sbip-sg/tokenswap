@@ -46,14 +46,14 @@ export class HomePage_SwapHistoryListComp extends PureComponent {
     getData() {
         axios({
             method: 'POST',
-            url: 'http://172.26.186.111:10050/htlc/currenthtlc',
+            url: 'http://172.26.186.111:10050/htlc/historyhtlc',
             data: { PartyName: localStorage.getItem("PARTY_NAME") },
             headers: { 'Content-Type': 'application/json; charset=utf-8' }
         }).then(res => {
             var resultData = JSON.parse(res.data['data']);
             var sliceResultData = resultData.slice(this.state.offset, this.state.offset + this.state.perPage);
             this.setState({
-                pageCount: Math.ceil(resultData.length / this.state.perPage),
+                pageCount: Math.ceil(resultData.length/this.state.perPage),
                 orgtableData: res.data['data'],
                 tableData: sliceResultData
             });
@@ -116,7 +116,10 @@ export class HomePage_SwapHistoryListComp extends PureComponent {
                                                                     swapTransactionIndex.sendvalue + " " + swapTransactionIndex.sendtype + " ~ " + swapTransactionIndex.receivevalue + " " + swapTransactionIndex.receivetype + "|" +
                                                                     swapTransactionIndex.htlcstatus + "|" +
                                                                     swapTransactionIndex.sendtimeout + "|" +
-                                                                    swapTransactionIndex.htlchash
+                                                                    swapTransactionIndex.htlchash + " | " + 
+                                                                    swapTransactionIndex.htlcstatus + " | " +  
+                                                                    swapTransactionIndex.sendstatus + " | " +  
+                                                                    swapTransactionIndex.receivestatus
                                                             }
                                                         });
                                                     }}>

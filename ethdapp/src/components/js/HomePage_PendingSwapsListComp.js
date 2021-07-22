@@ -116,7 +116,10 @@ export class HomePage_PendingSwapsListComp extends PureComponent {
                                                                     pendingSwapIndex.sendvalue + " " + pendingSwapIndex.sendtype + " ~ " + pendingSwapIndex.receivevalue + " " + pendingSwapIndex.receivetype + "|" +
                                                                     pendingSwapIndex.htlcstatus + "|" +
                                                                     pendingSwapIndex.sendtimeout + "|" +
-                                                                    pendingSwapIndex.htlchash
+                                                                    pendingSwapIndex.htlchash + " | " + 
+                                                                    pendingSwapIndex.htlcstatus + " | " +  
+                                                                    pendingSwapIndex.sendstatus + " | " +  
+                                                                    pendingSwapIndex.receivestatus
                                                             }
                                                         });
                                                     }}>

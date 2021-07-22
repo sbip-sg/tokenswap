@@ -124,7 +124,10 @@ export class HomePage_DashboardComp extends PureComponent {
                                                                     pendingSwapIndex.sendvalue + " " + pendingSwapIndex.sendtype + " ~ " + pendingSwapIndex.receivevalue + " " + pendingSwapIndex.receivetype + "|" +
                                                                     pendingSwapIndex.htlcstatus + "|" +
                                                                     pendingSwapIndex.sendtimeout + "|" +
-                                                                    pendingSwapIndex.htlchash
+                                                                    pendingSwapIndex.htlchash + " | " + 
+                                                                    pendingSwapIndex.htlcstatus + " | " +  
+                                                                    pendingSwapIndex.sendstatus + " | " +  
+                                                                    pendingSwapIndex.receivestatus
                                                             }
                                                         });
                                                     }}>
@@ -149,7 +152,7 @@ export class HomePage_DashboardComp extends PureComponent {
                                                 )) :
                                                     (
                                                         <tr>
-                                                            <td className="px-4 py-4 bg-white text-gray-900 text-sm text-center whitespace-nowrap" colspan="6">No Records Found</td>
+                                                            <td className="px-4 py-4 bg-white text-gray-900 text-sm text-center whitespace-nowrap" colspan="5">No Records Found</td>
                                                         </tr>
                                                     )
                                                 }
