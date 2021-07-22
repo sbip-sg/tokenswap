@@ -40,6 +40,7 @@ public class HTLCStatusController {
         Integer HTLCId = Integer.parseInt(requestdata.get("HTLCId"));
         String status = requestdata.get("status");
         String PartyName = requestdata.get("PartyName");
+        String ethsmartcontractaddress = requestdata.get("EthContractAddress");
 //         if (cordaUUID.equals("")) {
 //             return APIResult.createEg("FAILED! Not logged in");
 //         }
@@ -64,6 +65,9 @@ public class HTLCStatusController {
             if("withdraw".equals(htlcStatus.getSendstatus())&&"withdraw".equals(htlcStatus.getReceivestatus())||
                     "refund".equals(htlcStatus.getSendstatus())&&"refund".equals(htlcStatus.getReceivestatus())){
                 htlcStatus.setHtlcstatus("finished");
+            }
+            if(ethsmartcontractaddress!=null){
+                htlcStatus.setEthsmartcontractaddress(ethsmartcontractaddress);
             }
             htlcStatusRepository.save(htlcStatus);
            return APIResult.createOKMessage("Update sucess");
