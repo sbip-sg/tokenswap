@@ -3,7 +3,10 @@ import { useHistory, Link } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 
 import Web3 from "web3";
+import axios from "axios";
 import detectEthereumProvider from "@metamask/detect-provider";
+
+import auth from "../support/Auth.js";
 
 import HomeTwoToneIcon from "@material-ui/icons/HomeTwoTone";
 import PostAddTwoToneIcon from "@material-ui/icons/PostAddTwoTone";
@@ -14,7 +17,7 @@ import AccountBalanceTwoToneIcon from "@material-ui/icons/AccountBalanceTwoTone"
 import PersonOutlineTwoToneIcon from "@material-ui/icons/PersonOutlineTwoTone";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
-export const Common_SideNavbar = () => {
+export const Common_SideNavbar = (props) => {
     const history = useHistory();
 
     const [currentAccount, setCurrentAccount] = useState('');
@@ -28,12 +31,12 @@ export const Common_SideNavbar = () => {
             window.alert("MetaMask Wallet cannot be detected, please install MetaMask browser extension.");
         } else {
             const accountAddress = await ConnectMetamaskWallet();
-            if(accountAddress != null) {
-                web3.eth.getBalance(accountAddress, function (err, accountBalance) {
+            if (accountAddress != null) {
+                web3.eth.getBalance(accountAddress, function (err, accountWeiBalance) {
                     if (err === null && accountAddress) {
                         history.push({
                             pathname: "/dashboard/initiate-swap",
-                            state: { detail: accountAddress+"|"+accountBalance }
+                            state: { detail: accountAddress + "|" + web3.utils.fromWei(accountWeiBalance, "ether") }
                         });
                     }
                 });
@@ -78,7 +81,14 @@ export const Common_SideNavbar = () => {
                 <div className="space-y-3 p-2">
                     <h1 className="text-purple-800 text-sm font-bold">Atomic Swap</h1>
                     <div className="">
-                        <Link to="/dashboard" style={{ textDecoration: 'none' }}>
+                        <Link style={{ textDecoration: 'none' }}
+                            onClick={() => {
+                                history.push({
+                                    pathname: "/dashboard",
+                                    state: { detail: props.data }
+                                });
+                            }}
+                        >
                             <div className="flex p-2 text-purple-800 text-sm space-x-4 0 hover:bg-purple-400 hover:text-white cursor-pointer">
                                 <HomeTwoToneIcon />
                                 <p>Dashboard</p>
@@ -112,7 +122,18 @@ export const Common_SideNavbar = () => {
                 <div className="space-y-3 p-2">
                     <h1 className="text-purple-800 text-sm font-bold">Ethereum</h1>
                     <div className="">
-                        <Link to="/" style={{ textDecoration: 'none' }}>
+                        <Link style={{ textDecoration: 'none' }}
+                            onClick={() => {
+                                axios.post('http://172.26.186.111:10050/corda/logout').then((res) => {
+                                    console.log("SUCCESSFULLY LOGGED OUT: " + res.status);
+                                    auth.logout(() => {
+                                        history.push("/");
+                                    });
+                                }).catch((err) => {
+                                    console.log("ERROR LOGGING OUT: " + err);
+                                });
+                            }}
+                        >
                             <div className="flex p-2 text-purple-800 text-sm space-x-4 0 hover:bg-purple-400 hover:text-white cursor-pointer">
                                 <MonetizationOnTwoToneIcon />
                                 <p>Ether Transactions</p>
@@ -120,7 +141,18 @@ export const Common_SideNavbar = () => {
                         </Link>
                     </div>
                     <div className="">
-                        <Link to="/" style={{ textDecoration: 'none' }}>
+                        <Link style={{ textDecoration: 'none' }}
+                            onClick={() => {
+                                axios.post('http://172.26.186.111:10050/corda/logout').then((res) => {
+                                    console.log("SUCCESSFULLY LOGGED OUT: " + res.status);
+                                    auth.logout(() => {
+                                        history.push("/");
+                                    });
+                                }).catch((err) => {
+                                    console.log("ERROR LOGGING OUT: " + err);
+                                });
+                            }}
+                        >
                             <div className="flex p-2 text-purple-800 text-sm space-x-4 0 hover:bg-purple-400 hover:text-white cursor-pointer">
                                 <AccountBalanceTwoToneIcon />
                                 <p>Ether Price</p>
@@ -132,7 +164,18 @@ export const Common_SideNavbar = () => {
                 <div className="space-y-3 p-2">
                     <h1 className="text-purple-600 text-sm font-bold">My Menu</h1>
                     <div className="">
-                        <Link to="/" style={{ textDecoration: 'none' }}>
+                        <Link style={{ textDecoration: 'none' }}
+                            onClick={() => {
+                                axios.post('http://172.26.186.111:10050/corda/logout').then((res) => {
+                                    console.log("SUCCESSFULLY LOGGED OUT: " + res.status);
+                                    auth.logout(() => {
+                                        history.push("/");
+                                    });
+                                }).catch((err) => {
+                                    console.log("ERROR LOGGING OUT: " + err);
+                                });
+                            }}
+                        >
                             <div className="flex p-2 text-purple-800 text-sm space-x-4 0 hover:bg-purple-400 hover:text-white cursor-pointer">
                                 <PersonOutlineTwoToneIcon />
                                 <p>Profile</p>
@@ -140,7 +183,13 @@ export const Common_SideNavbar = () => {
                         </Link>
                     </div>
                     <div className="">
-                        <Link to="/" style={{ textDecoration: 'none' }}>
+                        <Link style={{ textDecoration: 'none' }}
+                            onClick={() => {
+                                auth.logout(() => {
+                                    history.push("/");
+                                });
+                            }}
+                        >
                             <div className="flex p-2 text-purple-800 text-sm space-x-4 0 hover:bg-purple-400 hover:text-white cursor-pointer">
                                 <ExitToAppIcon /><p>Logout</p>
                             </div>

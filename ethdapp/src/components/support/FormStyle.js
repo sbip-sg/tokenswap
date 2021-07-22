@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 
-function FormStyle(initialFValues, validateOnChange = false, validate) {
+function FormStyle(initialFValues, validateOnChange = false, validate, setState) {
     const [values, setValues] = useState(initialFValues);
     const [errors, setErrors] = useState({});
 
-    const handleInputChange = e => {
+    const handleInputChange = (e) => {
         const { name, value } = e.target;
         setValues({
             ...values, [name]: value
         });
+        setState(prevState => ({
+            ...prevState, [name]: value
+        }));
         if (validateOnChange) {
             validate({ [name]: value });
         }

@@ -3,6 +3,7 @@ import { useHistory, Link } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 
 import Web3 from "web3";
+import axios from "axios";
 import detectEthereumProvider from "@metamask/detect-provider";
 
 import auth from "../support/Auth.js";
@@ -22,7 +23,7 @@ export const Common_TopNavbar = () => {
     const [messages, setMessage] = useState([]);
 
     useEffect(() => {
-        window.onbeforeunload = function () { return "Prevent reload" };        
+        window.onbeforeunload = function () { return "Prevent reload" };
         window.ethereum.on('accountsChanged', handleAccountsChanged);
         window.ethereum.on('chainChanged', (_chainId) => {
             setCurrentChainID(() => parseInt(_chainId, 16));
@@ -49,9 +50,9 @@ export const Common_TopNavbar = () => {
             setMessage(messages => [...messages, { head: "MetaMask Wallet Not Found", body: `Please install MetaMask!`, variant: 'warning' }]);
         } else {
             const accountAddress = await ConnectMetamaskWallet();
-            web3.eth.getBalance(accountAddress, function (err, accountBalance) {
+            web3.eth.getBalance(accountAddress, function (err, accountWeiBalance) {
                 if (err === null && accountAddress) {
-                    setMessage(messages => [...messages, { head: "MetaMask Account Informaton", body: `Ether Balance: ${accountBalance} Ether Address: ${accountAddress}`, variant: 'success' }]);
+                    setMessage(messages => [...messages, { head: "MetaMask Account Informaton", body: `Ether Balance: ${web3.utils.fromWei(accountWeiBalance, "ether")} ether || Ether Address: ${accountAddress}`, variant: 'success' }]);
                 }
             });
         }
@@ -128,22 +129,33 @@ export const Common_TopNavbar = () => {
 
                 <Link style={{ textDecoration: 'none' }}
                     onClick={() => {
-                        auth.logout(() => {
-                            history.push("/");
+                        axios.post('http://172.26.186.111:10050/corda/logout').then((res) => {
+                            console.log("SUCCESSFULLY LOGGED OUT: " + res.status);
+                            auth.logout(() => {
+                                SignOutMetamaskWallet();
+                                history.push("/");
+                            });
+                        }).catch((err) => {
+                            console.log("ERROR LOGGING OUT: " + err);
                         });
                     }}
                 ><NotificationsTwoToneIcon /></Link>
                 <Link style={{ textDecoration: 'none' }}
                     onClick={() => {
-                        auth.logout(() => {
-                            history.push("/");
+                        axios.post('http://172.26.186.111:10050/corda/logout').then((res) => {
+                            console.log("SUCCESSFULLY LOGGED OUT: " + res.status);
+                            auth.logout(() => {
+                                SignOutMetamaskWallet();
+                                history.push("/");
+                            });
+                        }).catch((err) => {
+                            console.log("ERROR LOGGING OUT: " + err);
                         });
                     }}
                 ><AccountCircleTwoToneIcon /></Link>
                 <Link style={{ textDecoration: 'none' }}
                     onClick={() => {
                         auth.logout(() => {
-                            SignOutMetamaskWallet();
                             history.push("/");
                         });
                     }}
