@@ -10,16 +10,19 @@ contract HTLC {
   address public owner; 
   uint public amount; 
 
-  constructor(address _recipient, bytes32 _hash) { 
+  constructor(address _recipient, bytes32 _hash,uint _lockTime) payable { 
     recipient = _recipient;
     owner = msg.sender; 
     hash = _hash;
+    startTime = block.timestamp;
+    lockTime = _lockTime;
+    amount = msg.value;
   } 
 
-  function fund() external payable{
-    startTime = block.timestamp;
-    amount = msg.value;
-  }
+  // function fund() external payable{
+  //   startTime = block.timestamp;
+  //   amount = msg.value;
+  // }
 
   function withdraw(string memory _secret) external { 
     require(keccak256(abi.encodePacked(_secret)) == hash, 'wrong secret');

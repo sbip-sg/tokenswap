@@ -2,6 +2,8 @@ import React, { PureComponent } from "react";
 import ReactPaginate from "react-paginate";
 
 import axios from "axios";
+import detectEthereumProvider from "@metamask/detect-provider";
+import Web3 from "web3";
 
 import { Common_CardUI } from "./Common_CardUI.js";
 
@@ -14,7 +16,9 @@ export class HomePage_DashboardComp extends PureComponent {
             tableData: [],
             orgtableData: [],
             perPage: 10,
-            currentPage: 0
+            currentPage: 0,
+            cordaToken:0,
+            ETH:0
         }
         this.handlePageClick = this.handlePageClick.bind(this);
     }
@@ -45,12 +49,12 @@ export class HomePage_DashboardComp extends PureComponent {
         this.getData();
     }
 
-    getData() {
-        axios({
+    async getData() {
+        await axios({
             method: 'POST',
             url: 'http://172.26.186.111:10050/htlc/currenthtlc',
             data: { PartyName: localStorage.getItem("PARTY_NAME") },
-            headers: { 'Content-Type': 'application/json; charset=utf-8' }
+            headers: { 'Content-Type': 'application/json; charset=utf-8', 'cordaUUID': localStorage.getItem("LOGIN_ACCESS_TOKEN")  }
         }).then(res => {
             var resultData = JSON.parse(res.data['data']);
             var sliceResultData = resultData.slice(this.state.offset, this.state.offset + this.state.perPage);
@@ -60,6 +64,43 @@ export class HomePage_DashboardComp extends PureComponent {
                 tableData: sliceResultData
             });
         });
+        await axios({
+            method: 'POST',
+            url: 'http://172.26.186.111:10050/corda/balance',
+            data: { symbol :"house" },
+            headers: { 'Content-Type': 'application/json; charset=utf-8', 'cordaUUID': localStorage.getItem("LOGIN_ACCESS_TOKEN")  }
+        }).then(res => {
+            var resultData = JSON.parse(res.data['data']);
+            console.log(resultData);
+            this.setState({
+                cordaToken:resultData.balance
+            })
+        });
+        //get eth value
+        const provider = await detectEthereumProvider();
+        const web3 = new Web3(provider);
+        var ETHBalance = 0;
+        if (!provider) {
+            window.alert("MetaMask Wallet cannot be detected, please install MetaMask browser extension.");
+        } else {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            console.log(accounts)
+            const accountAddress = accounts[0]
+            if (accountAddress != null) {
+                await web3.eth.getBalance(accountAddress, function (err, accountWeiBalance) {
+                    if (err === null && accountAddress) {
+                        ETHBalance = web3.utils.fromWei(accountWeiBalance, "ether")
+                    }
+                });
+            } else {
+                /* THIS SEGMENT REQUIRES FIXING BECAUSE IF USER CHOSE NOT TO CONNECT TO METAMASK, THE NEXT CONNECTION WILL HAVE ERROR MESSAGE */
+                window.alert("Connection request rejected by user. Please connect to MetaMask.");
+            }
+        }
+        console.log(ETHBalance)
+        this.setState({
+            ETH : ETHBalance
+        })
     }
 
     render() {
@@ -73,8 +114,8 @@ export class HomePage_DashboardComp extends PureComponent {
                     </p>
                 </div>
                 <div className="flex pl-4 pr-4 mt-2 space-x-3">
-                    <Common_CardUI title="House Token (Balance)" balance={0} icon={0} />
-                    <Common_CardUI title="Ether (Balance)" balance={0} icon={1} />
+                    <Common_CardUI title="House Token (Balance)" balance={this.state.cordaToken} icon={0} />
+                    <Common_CardUI title="Ether (Balance)" balance={this.state.ETH} icon={1} />
                     <Common_CardUI title="Pending Swap Requests" balance={0} icon={2} />
                     <Common_CardUI title="Completed Swap Requests" balance={0} icon={3} />
                 </div>

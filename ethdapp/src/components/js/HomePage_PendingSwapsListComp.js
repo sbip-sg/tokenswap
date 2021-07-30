@@ -9,8 +9,8 @@ export class HomePage_PendingSwapsListComp extends PureComponent {
 
         this.state = {
             offset: 0,
-            tableData: [],
-            orgtableData: [],
+            tableData: new Array(),
+            orgtableData: new Array(),
             perPage: 10,
             currentPage: 0
         }
@@ -31,7 +31,9 @@ export class HomePage_PendingSwapsListComp extends PureComponent {
 
     loadMoreData() {
         const data = this.state.orgtableData;
+        console.log(data[0])
         const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage);
+        console.log(slice)
         this.setState({
             pageCount: Math.ceil(data.length / this.state.perPage),
             tableData: slice
@@ -54,7 +56,7 @@ export class HomePage_PendingSwapsListComp extends PureComponent {
             var sliceResultData = resultData.slice(this.state.offset, this.state.offset + this.state.perPage);
             this.setState({
                 pageCount: Math.ceil(resultData.length / this.state.perPage),
-                orgtableData: res.data['data'],
+                orgtableData: JSON.parse(res.data['data']),
                 tableData: sliceResultData
             });
         });
@@ -91,7 +93,8 @@ export class HomePage_PendingSwapsListComp extends PureComponent {
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-gray-300">
-                                                {(this.state.tableData.length) ? (this.state.tableData).map((pendingSwapIndex, i) => (
+                                                {
+                                                (this.state.tableData.length) ? (this.state.tableData).map((pendingSwapIndex, i) => (
                                                     <tr key={pendingSwapIndex.addressPartyA} className="cursor-pointer" onClick={() => {
                                                         if (pendingSwapIndex.sendtype === "house") {
                                                             pendingSwapIndex.sendtype = "HouseToken";
@@ -116,10 +119,11 @@ export class HomePage_PendingSwapsListComp extends PureComponent {
                                                                     pendingSwapIndex.sendvalue + " " + pendingSwapIndex.sendtype + " ~ " + pendingSwapIndex.receivevalue + " " + pendingSwapIndex.receivetype + "|" +
                                                                     pendingSwapIndex.htlcstatus + "|" +
                                                                     pendingSwapIndex.sendtimeout + "|" +
-                                                                    pendingSwapIndex.htlchash + " | " + 
-                                                                    pendingSwapIndex.htlcstatus + " | " +  
-                                                                    pendingSwapIndex.sendstatus + " | " +  
-                                                                    pendingSwapIndex.receivestatus
+                                                                    pendingSwapIndex.htlchash + "|" + 
+                                                                    pendingSwapIndex.htlcstatus + "|" +  
+                                                                    pendingSwapIndex.sendstatus + "|" +  
+                                                                    pendingSwapIndex.receivestatus+"|"+
+                                                                    pendingSwapIndex.ethsmartcontractaddress
                                                             }
                                                         });
                                                     }}>

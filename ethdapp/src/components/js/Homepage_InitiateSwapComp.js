@@ -21,7 +21,8 @@ const initialState = {
     Secret: { value: '', validateOnChange: false, error: '' },
     Timeoutnum: { value: '', validateOnChange: false, error: '' },
     submitCalled: false,
-    allFieldsValidated: false
+    allFieldsValidated: false,
+    Balance:''
 };
 
 export class Homepage_InitiateSwapComp extends Component {
@@ -53,7 +54,27 @@ export class Homepage_InitiateSwapComp extends Component {
         return myContract;
         */
     };
+      /* componentDidMount() is invoked immediately after a component is mounted */
+      componentDidMount() {
+        this.getData();
+    }
 
+    async getData() {
+
+        await axios({
+            method: 'POST',
+            url: 'http://172.26.186.111:10050/corda/balance',
+            data: { symbol :"house" },
+            headers: { 'Content-Type': 'application/json; charset=utf-8', 'cordaUUID': localStorage.getItem("LOGIN_ACCESS_TOKEN")  }
+        }).then(res => {
+            var resultData = JSON.parse(res.data['data']);
+            console.log(resultData);
+            this.setState({
+                Balance:resultData.balance +" Husetoken "
+            })
+        });
+        
+    }
     handleBlur(validationFunc, e) {
         const field = e.target.name;
         if ((this.state[field]['validateOnChange'] === false) && (this.state.submitCalled === false)) {
@@ -152,7 +173,7 @@ export class Homepage_InitiateSwapComp extends Component {
                             <div className="md:w-11/11 md:mb-0">
                                 <p className="font-semibold text-2xl text-purple-800">Initiate Swap</p>
                                 <p className="uppercase pt-2 text-xs text-indigo-500 font-bold">
-                                    [ Account Balance: {(location.state.detail).split("|")[1]} Ether ]
+                                    [ Account Balance: {this.state.Balance + (location.state.detail).split("|")[1]} Ether ]
                                 </p>
                             </div>
                         </div>
@@ -171,11 +192,12 @@ export class Homepage_InitiateSwapComp extends Component {
                                     <div className="absolute inset-y-0 right-0 flex items-center">
                                         <select
                                             className="h-auto py-3 pl-2 pr-4 border-l-2 border-gray-400 bg-transparent text-sm text-black rounded-md"
-                                            name="SendType" value={SendType.value}
+                                            name="SendType" value={SendType.value} defaultValue="house"
                                             onChange={e => this.handleChange(fieldValidation.validateText, e)}
                                             onBlur={e => this.handleBlur(fieldValidation.validateText, e)}>
-                                            <option selected="selected">HouseToken</option>
-                                            <option>Ether</option>
+                                            <option value="DEFAULT" >Choose the tokentype ...</option>
+                                            <option value="house" >HouseToken</option>
+                                            <option value="ETH">Ether</option>
                                         </select>
                                     </div>
                                 </div>
@@ -197,11 +219,12 @@ export class Homepage_InitiateSwapComp extends Component {
                                     <div className="absolute inset-y-0 right-0 flex items-center">
                                         <select
                                             className="h-auto py-3 pl-2 pr-4 border-l-2 border-gray-400 bg-transparent text-sm text-black rounded-md"
-                                            name="ReceiveType" value={ReceiveType.value}
+                                            name="ReceiveType" value={ReceiveType.value} defaultValue="house"
                                             onChange={e => this.handleChange(fieldValidation.validateText, e)}
                                             onBlur={e => this.handleBlur(fieldValidation.validateText, e)}>
-                                            <option>HouseToken</option>
-                                            <option selected="selected">Ether</option>
+                                            <option value="DEFAULT" >Choose the tokentype ...</option>
+                                            <option value="house">HouseToken</option>
+                                            <option  value="ETH">Ether</option>
                                         </select>
                                     </div>
                                 </div>
