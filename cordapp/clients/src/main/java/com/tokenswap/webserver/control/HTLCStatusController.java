@@ -62,8 +62,8 @@ public class HTLCStatusController {
             else if(PartyName.equals(htlcStatus.getReceiveparty())){
                 htlcStatus.setReceivestatus(status);
             }
-            if("withdraw".equals(htlcStatus.getSendstatus())&&"withdraw".equals(htlcStatus.getReceivestatus())||
-                    "refund".equals(htlcStatus.getSendstatus())&&"refund".equals(htlcStatus.getReceivestatus())){
+            if("sendwithdraw".equals(htlcStatus.getSendstatus())&&"receivewithdraw".equals(htlcStatus.getReceivestatus())||
+                    "sendrefund".equals(htlcStatus.getSendstatus())&&"receiverefund".equals(htlcStatus.getReceivestatus())){
                 htlcStatus.setHtlcstatus("finished");
             }
             if(ethsmartcontractaddress!=null){

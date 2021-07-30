@@ -279,10 +279,7 @@ public class CordaController {
         return APIResult.createEg("FAILED! Flow error: " + s);
       else {
         HTLCStatus htlcStatus = htlcStatusRepository.findById(HTLCId).orElse(null);
-        htlcStatus.setReceivestatus("withdraw");
-        if("withdraw".equals(htlcStatus.getSendstatus())) {
-          htlcStatus.setHtlcstatus("finished");
-        }
+        htlcStatus.setReceivestatus("sendwithdraw");
         htlcStatusRepository.save(htlcStatus);
 
         return APIResult.createOKMessage("Withdraw success");
@@ -333,10 +330,7 @@ public class CordaController {
         return APIResult.createEg( "FAILED! Flow error: " + s);
       else {
         HTLCStatus htlcStatus = htlcStatusRepository.findById(HTLCId).orElse(null);
-        htlcStatus.setSendstatus("refund");
-        if("refund".equals(htlcStatus.getReceivestatus())) {
-          htlcStatus.setHtlcstatus("finished");
-        }
+        htlcStatus.setSendstatus("sendrefund");
         htlcStatusRepository.save(htlcStatus);
 
         return APIResult.createOKMessage("Refund success");
