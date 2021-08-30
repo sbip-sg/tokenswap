@@ -164,6 +164,70 @@ task deployNodes(type: net.corda.plugins.Cordform, dependsOn: ['jar']) {
 //        rpcUsers = [[user: "user1", "password": "test", "permissions": ["ALL"]]]
 //    }
 }
+
+task deployNetwork(type: net.corda.plugins.Cordform, dependsOn: ['jar']) {
+    nodeDefaults {
+        projectCordapp {
+            deploy = false
+        }
+        cordapp("$tokens_release_group:tokens-contracts:$tokens_release_version")
+        cordapp("$tokens_release_group:tokens-workflows:$tokens_release_version")
+        //cordapp("$confidential_id_release_group:ci-workflows:$confidential_id_release_version")
+        cordapp project(':contracts')
+        cordapp project(':workflows')
+	    runSchemaMigration = true
+    }
+    node {
+        name "O=Notary,L=London,C=GB"
+        notary = [validating : false]
+        p2pAddress ("10.0.0.4:10002")
+        rpcSettings {
+            address("0.0.0.0:10003")
+            adminAddress("0.0.0.0:10043")
+        }
+        sshdPort 2220
+        cordapps = []
+    }
+    node {
+        name "O=Escrow,L=London,C=GB"
+        p2pAddress ("10.0.0.6:10005")
+        rpcSettings {
+            address("0.0.0.0:10006")
+            adminAddress("0.0.0.0:10046")
+        }
+        sshdPort 2221
+        rpcUsers = [[ user: "user1", "password": "test", "permissions": ["ALL"]]]
+    }
+    node {
+        name "O=Alice,L=New York,C=US"
+        p2pAddress ("10.0.0.4:10008")
+        rpcSettings {
+            address("0.0.0.0:10009")
+            adminAddress("0.0.0.0:10049")
+        }
+        sshdPort 2222
+        rpcUsers = [[ user: "user1", "password": "test", "permissions": ["ALL"]]]
+    }
+    node {
+        name "O=Bob,L=Paris,C=FR"
+        p2pAddress ("10.0.0.6:10012")
+        rpcSettings {
+            address("0.0.0.0:10013")
+            adminAddress("0.0.0.0:10014")
+        }
+        sshdPort 2223
+        rpcUsers = [[user: "user1", "password": "test", "permissions": ["ALL"]]]
+    }
+//    node {
+//        name "O=Escrow,L=Paris,C=FR"
+//        p2pPort 10012
+//        rpcSettings {
+//            address("localhost:10013")
+//            adminAddress("localhost:10014")
+//        }
+//        rpcUsers = [[user: "user1", "password": "test", "permissions": ["ALL"]]]
+//    }
+}
 task deployNode(type: net.corda.plugins.Cordform, dependsOn: ['jar']) {
     nodeDefaults {
         projectCordapp {

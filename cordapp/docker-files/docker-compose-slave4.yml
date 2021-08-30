@@ -1,0 +1,41 @@
+version: '3'
+services:
+  notary:
+    volumes:
+    - ./Notary/node.conf:/etc/corda/node.conf
+    - ./Notary/node.conf:/opt/corda/node.conf
+    - ./Notary/certificates:/opt/corda/certificates
+    - ./Notary/logs:/opt/corda/logs
+    - ./Notary/persistence:/opt/corda/persistence
+    - ./Notary/cordapps:/opt/corda/cordapps
+    - ./Notary/network-parameters:/opt/corda/network-parameters
+    - ./Notary/additional-node-infos:/opt/corda/additional-node-infos
+    - ./Notary/drivers:/opt/corda/drivers
+    environment:
+    - ACCEPT_LICENSE=${ACCEPT_LICENSE}
+#    - CORDA_ARGS=run-migration-scripts --core-schemas --app-schemas
+    ports:
+    - "10002:10002"
+    - "10003:10003"
+    - "10043:10043"
+    image: corda/corda-zulu-java1.8-4.6
+  alice:
+    volumes:
+    - ./Alice/node.conf:/etc/corda/node.conf
+    - ./Alice/node.conf:/opt/corda/node.conf
+    - ./Alice/certificates:/opt/corda/certificates
+    - ./Alice/logs:/opt/corda/logs
+    - ./Alice/persistence:/opt/corda/persistence
+    - ./Alice/cordapps:/opt/corda/cordapps
+    - ./Alice/network-parameters:/opt/corda/network-parameters
+    - ./Alice/additional-node-infos:/opt/corda/additional-node-infos
+    - ./Alice/drivers:/opt/corda/drivers
+    environment:
+    - ACCEPT_LICENSE=${ACCEPT_LICENSE}
+#    - CORDA_ARGS=run-migration-scripts --core-schemas --app-schemas
+    ports:
+    - "10008:10008"
+    - "10009:10009"
+    - "10049:10049"
+    - "2222:2222"
+    image: corda/corda-zulu-java1.8-4.6
