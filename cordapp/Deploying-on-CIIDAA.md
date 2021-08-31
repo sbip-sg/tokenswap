@@ -22,7 +22,8 @@
   - Run with docker
     - For each slave node, do the following:
       - Use the `docker-compose.yml` provided as example, put it right outside of the node folders
-      - Adjust `docker-compose.yml` so it only contains the node(s) you need
+      - Adjust `docker-compose.yml` so it only contains the node(s) you need.
+      - Expose all ports specified in `build.gradle`. If you don't run RPCs yet, you don't need to include those ports.
       - Create all the volumes written in the file in the node folder(s). Usually, you only have to create the `persistence` folder
       - Allow permission from the image to the folder: (`Notary` as an example)
         ```
