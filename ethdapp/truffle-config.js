@@ -1,15 +1,15 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider'); 
 
 const kovanProvider = new HDWalletProvider({
-  privateKeys: ['84ee4e31a63952d89ca5a89584a0fef6913203632b8113e7db2a6fcfd4c3f427',
-  '559bd1ac05986b83f5133d19a1474719309d0d0253cd1767e9d358aa1d7232e1'
+  privateKeys: ['-',
+  '-'
   ],
   providerOrUrl: 'https://kovan.infura.io/v3/1aba1048781a4cc98a67bf258e3aad04' 
 });
 
 const binanceProvider = new HDWalletProvider({
-  privateKeys: ['84ee4e31a63952d89ca5a89584a0fef6913203632b8113e7db2a6fcfd4c3f427',
-  '559bd1ac05986b83f5133d19a1474719309d0d0253cd1767e9d358aa1d7232e1'
+  privateKeys: ['-',
+  '-'
     
   ],
   providerOrUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545/'
